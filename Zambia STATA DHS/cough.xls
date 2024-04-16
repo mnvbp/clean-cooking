@@ -1,0 +1,200 @@
+		
+		
+		
+		
+		
+			dicot_anemia		
+region	0	1	Total
+	No.	No.	No.
+central	1,409.0	725.0	2,134.0
+copperbelt	1,394.0	889.0	2,283.0
+eastern	1,478.0	929.0	2,407.0
+luapula	1,176.0	999.0	2,175.0
+lusaka	1,531.0	1,037.0	2,568.0
+muchinga	1,191.0	684.0	1,875.0
+northern	1,201.0	827.0	2,028.0
+north western	927.0	787.0	1,714.0
+southern	1,244.0	865.0	2,109.0
+western	872.0	804.0	1,676.0
+Total	12,423.0	8,546.0	20,969.0
+
+	dicot_anemia		
+gender	0	1	Total
+	No.	No.	No.
+1	1,549.0	2,287.0	3,836.0
+2	10,874.0	6,259.0	17,133.0
+Total	12,423.0	8,546.0	20,969.0
+
+	dicot_anemia		
+type of place of residence	0	1	Total
+	No.	No.	No.
+	7,786.0	5,596.0	13,382.0
+urban	4,637.0	2,950.0	7,587.0
+Total	12,423.0	8,546.0	20,969.0
+
+	dicot_anemia		
+wealth index combined	0	1	Total
+	No.	No.	No.
+poorest	2,742.0	2,179.0	4,921.0
+poorer	2,598.0	1,913.0	4,511.0
+middle	2,494.0	1,657.0	4,151.0
+richer	2,258.0	1,374.0	3,632.0
+richest	2,331.0	1,423.0	3,754.0
+Total	12,423.0	8,546.0	20,969.0
+
+	cough		
+region	0	1	Total
+	No.	No.	No.
+central	783.0	141.0	924.0
+copperbelt	661.0	212.0	873.0
+eastern	813.0	305.0	1,118.0
+luapula	862.0	252.0	1,114.0
+lusaka	830.0	150.0	980.0
+muchinga	639.0	210.0	849.0
+northern	769.0	177.0	946.0
+north western	617.0	150.0	767.0
+southern	810.0	152.0	962.0
+western	582.0	200.0	782.0
+Total	7,366.0	1,949.0	9,315.0
+
+	cough		
+gender	0	1	Total
+	No.	No.	No.
+1	3,646.0	966.0	4,612.0
+2	3,720.0	983.0	4,703.0
+Total	7,366.0	1,949.0	9,315.0
+
+	cough		
+type of place of residence	0	1	Total
+	No.	No.	No.
+	5,212.0	1,321.0	6,533.0
+urban	2,154.0	628.0	2,782.0
+Total	7,366.0	1,949.0	9,315.0
+
+	cough		
+wealth index combined	0	1	Total
+	No.	No.	No.
+poorest	2,075.0	567.0	2,642.0
+poorer	1,807.0	456.0	2,263.0
+middle	1,447.0	374.0	1,821.0
+richer	1,106.0	279.0	1,385.0
+richest	931.0	273.0	1,204.0
+Total	7,366.0	1,949.0	9,315.0
+
+	pregterm		
+region	0	1	Total
+	No.	No.	No.
+central	2,199.0	196.0	2,395.0
+copperbelt	2,339.0	201.0	2,540.0
+eastern	2,425.0	303.0	2,728.0
+luapula	2,315.0	314.0	2,629.0
+lusaka	2,625.0	200.0	2,825.0
+muchinga	1,883.0	216.0	2,099.0
+northern	2,024.0	221.0	2,245.0
+north western	1,723.0	158.0	1,881.0
+southern	2,178.0	188.0	2,366.0
+western	1,728.0	206.0	1,934.0
+Total	21,439.0	2,203.0	23,642.0
+
+	pregterm		
+gender	0	1	Total
+	No.	No.	No.
+1	4,494.0	464.0	4,958.0
+2	16,945.0	1,739.0	18,684.0
+Total	21,439.0	2,203.0	23,642.0
+
+	pregterm		
+type of place of residence	0	1	Total
+	No.	No.	No.
+	13,649.0	1,493.0	15,142.0
+urban	7,790.0	710.0	8,500.0
+Total	21,439.0	2,203.0	23,642.0
+
+	pregterm		
+wealth index combined	0	1	Total
+	No.	No.	No.
+poorest	5,071.0	600.0	5,671.0
+poorer	4,558.0	514.0	5,072.0
+middle	4,267.0	378.0	4,645.0
+richer	3,695.0	341.0	4,036.0
+richest	3,848.0	370.0	4,218.0
+Total	21,439.0	2,203.0	23,642.0
+
+	blood_pressure		
+region	0	1	Total
+	No.	No.	No.
+central	2,235.0	160.0	2,395.0
+copperbelt	2,257.0	283.0	2,540.0
+eastern	2,408.0	320.0	2,728.0
+luapula	2,448.0	181.0	2,629.0
+lusaka	2,544.0	281.0	2,825.0
+muchinga	1,988.0	111.0	2,099.0
+northern	2,143.0	102.0	2,245.0
+north western	1,772.0	109.0	1,881.0
+southern	2,179.0	187.0	2,366.0
+western	1,820.0	114.0	1,934.0
+Total	21,794.0	1,848.0	23,642.0
+
+	blood_pressure		
+gender	0	1	Total
+	No.	No.	No.
+1	4,600.0	358.0	4,958.0
+2	17,194.0	1,490.0	18,684.0
+Total	21,794.0	1,848.0	23,642.0
+
+	blood_pressure		
+type of place of residence	0	1	Total
+	No.	No.	No.
+	14,219.0	923.0	15,142.0
+urban	7,575.0	925.0	8,500.0
+Total	21,794.0	1,848.0	23,642.0
+
+	blood_pressure		
+wealth index combined	0	1	Total
+	No.	No.	No.
+poorest	5,390.0	281.0	5,671.0
+poorer	4,782.0	290.0	5,072.0
+middle	4,325.0	320.0	4,645.0
+richer	3,633.0	403.0	4,036.0
+richest	3,664.0	554.0	4,218.0
+Total	21,794.0	1,848.0	23,642.0
+
+	dicot_underweight		
+region	0	1	Total
+	No.	No.	No.
+central	481.0	46.0	527.0
+copperbelt	483.0	43.0	526.0
+eastern	598.0	52.0	650.0
+luapula	404.0	34.0	438.0
+lusaka	559.0	50.0	609.0
+muchinga	354.0	35.0	389.0
+northern	330.0	19.0	349.0
+north western	473.0	39.0	512.0
+southern	453.0	40.0	493.0
+western	371.0	26.0	397.0
+Total	4,506.0	384.0	4,890.0
+
+	dicot_underweight		
+gender	0	1	Total
+	No.	No.	No.
+1	2,286.0	160.0	2,446.0
+2	2,220.0	224.0	2,444.0
+Total	4,506.0	384.0	4,890.0
+
+	dicot_underweight		
+type of place of residence	0	1	Total
+	No.	No.	No.
+	2,931.0	234.0	3,165.0
+urban	1,575.0	150.0	1,725.0
+Total	4,506.0	384.0	4,890.0
+
+	dicot_underweight		
+wealth index combined	0	1	Total
+	No.	No.	No.
+poorest	1,007.0	85.0	1,092.0
+poorer	1,027.0	78.0	1,105.0
+middle	925.0	93.0	1,018.0
+richer	801.0	79.0	880.0
+richest	746.0	49.0	795.0
+Total	4,506.0	384.0	4,890.0
+
