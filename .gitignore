@@ -16,7 +16,10 @@ Zambia-2024/outputs/
 ~$*.xlsx
 
 # OS clutter
-.DS_StoreZambia STATA DHS/DHSCoordinates.dta
+.DS_Store
+
+#old stata folder
+Zambia STATA DHS/DHSCoordinates.dta
 Zambia STATA DHS/Birth Recode/ZMBR71FL.DCT
 Zambia STATA DHS/Birth Recode/ZMBR71FL.DO
 Zambia STATA DHS/Birth Recode/ZMBR71FL.DTA
