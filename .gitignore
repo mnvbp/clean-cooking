@@ -1,0 +1,19 @@
+# Data — DHS terms prohibit redistribution
+Zambia-2018/data/
+Zambia-2024/data/
+
+#Need to fix this later
+Zambia-2024/other/
+
+# Outputs — regenerable from code
+Zambia-2018/outputs/
+Zambia-2024/outputs/
+
+# R environment
+.Rhistory
+.RData
+*.rds
+.Rproj.user/
+
+# OS clutter
+.DS_Store
