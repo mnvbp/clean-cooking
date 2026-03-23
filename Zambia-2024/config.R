@@ -33,10 +33,10 @@ AUTHOR       <- "Manav Parikh"
 # the project root set by setwd() in that script.
 
 # Raw data folder — place your DTA files here
-BASE_DIR   <- "Zambia 2024 R/data"
+BASE_DIR   <- "Zambia-2024/data"
 
 # Results are written here (created automatically if missing)
-OUTPUT_DIR <- "Zambia 2024 R/outputs"
+OUTPUT_DIR <- "Zambia-2024/outputs"
 
 # DTA filenames inside BASE_DIR
 DATA_FILES <- list(
