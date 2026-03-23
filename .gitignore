@@ -1,4 +1,22 @@
-Zambia STATA DHS/DHSCoordinates.dta
+# Data — DHS terms prohibit redistribution
+Zambia-2018/data/
+Zambia-2024/data/
+Zambia-2024/other/
+
+# Outputs — regenerable from code
+Zambia-2018/outputs/
+Zambia-2024/outputs/
+
+# R environment
+.Rhistory
+.RData
+*.rds
+
+# Excel temp files
+~$*.xlsx
+
+# OS clutter
+.DS_StoreZambia STATA DHS/DHSCoordinates.dta
 Zambia STATA DHS/Birth Recode/ZMBR71FL.DCT
 Zambia STATA DHS/Birth Recode/ZMBR71FL.DO
 Zambia STATA DHS/Birth Recode/ZMBR71FL.DTA
