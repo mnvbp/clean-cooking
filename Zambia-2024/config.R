@@ -29,14 +29,12 @@ AUTHOR       <- "Manav Parikh"
 # ============================================================================
 # 2. FILE PATHS
 # ============================================================================
-# Always run the pipeline by sourcing 00_main.R — paths are relative to
-# the project root set by setwd() in that script.
 
 # Raw data folder — place your DTA files here
-BASE_DIR   <- "Zambia-2024/data"
+BASE_DIR   <- here::here("Zambia-2024", "data")
 
 # Results are written here (created automatically if missing)
-OUTPUT_DIR <- "Zambia-2024/outputs"
+OUTPUT_DIR <- here::here("Zambia-2024", "outputs")
 
 # DTA filenames inside BASE_DIR
 DATA_FILES <- list(

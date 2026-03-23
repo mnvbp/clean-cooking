@@ -15,32 +15,14 @@
 start_time <- Sys.time()
 
 # ----------------------------------------------------------------------------
-# SET PROJECT DIRECTORY
+# PROJECT DIRECTORY (Clean Version)
 # ----------------------------------------------------------------------------
-if (interactive()) {
-  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
-    doc_path <- rstudioapi::getActiveDocumentContext()$path
-    if (!is.null(doc_path) && nchar(doc_path) > 0) {
-      PROJECT_DIR <- dirname(doc_path)
-    } else {
-      PROJECT_DIR <- getwd()
-    }
-  } else {
-    PROJECT_DIR <- getwd()
-  }
-} else {
-  PROJECT_DIR <- getSrcDirectory(function(x) {x})
-  if (length(PROJECT_DIR) == 0 || PROJECT_DIR == "") PROJECT_DIR <- getwd()
-}
+# We assume the user has opened the .Rproj file or is using a runner.
+# We do NOT use setwd() here to avoid breaking the parent runner.
+if (!requireNamespace("here", quietly = TRUE)) install.packages("here")
+PROJECT_DIR <- here::here()
+cat("Project directory anchored at:", PROJECT_DIR, "\n")
 
-# Go one level up from pipeline/ to the survey root where config.R lives
-PROJECT_DIR <- dirname(PROJECT_DIR)
-
-if (!dir.exists(PROJECT_DIR)) {
-  stop("Could not determine project directory. Please open 00_main.R in RStudio and source it directly.")
-}
-setwd(PROJECT_DIR)
-cat("Project directory:", PROJECT_DIR, "\n")
 
 # ----------------------------------------------------------------------------
 # SOURCE CONFIGURATION
@@ -60,12 +42,12 @@ cat("Config:", CONFIG_PATH, "\n")
 # ----------------------------------------------------------------------------
 
 cat("Loading helper functions...\n")
-source("utils/variable_helpers.R")
-source("utils/regression_helpers.R")
-source("utils/crosstab_helpers.R")
-source("utils/collinearity_helpers.R")
-source("utils/export_helpers.R")
-source("utils/sample_tracking_helpers.R")
+source(here::here("utils", "variable_helpers.R"))
+source(here::here("utils", "regression_helpers.R"))
+source(here::here("utils", "crosstab_helpers.R"))
+source(here::here("utils", "collinearity_helpers.R"))
+source(here::here("utils", "export_helpers.R"))
+source(here::here("utils", "sample_tracking_helpers.R"))
 
 # Initialize pipeline log — appended to across all pipeline scripts
 pipeline_log <- init_pipeline_log()
@@ -75,22 +57,21 @@ pipeline_log <- init_pipeline_log()
 # ----------------------------------------------------------------------------
 
 cat("Loading analysis modules...\n")
-source("modules/collinearity_module.R")
-source("modules/regression_module.R")
-source("modules/crosstab_module.R")
-source("modules/univariable_module.R")
-source("modules/sensitivity_module.R")
+source(here::here("modules", "collinearity_module.R"))
+source(here::here("modules", "regression_module.R"))
+source(here::here("modules", "crosstab_module.R"))
+source(here::here("modules", "univariable_module.R"))
+source(here::here("modules", "sensitivity_module.R"))
 
 # ----------------------------------------------------------------------------
 # RUN PIPELINE
 # ----------------------------------------------------------------------------
-
-source("pipeline/01_setup.R")
-source("pipeline/02_load_data.R")
-source("pipeline/03_merge_data.R")
-source("pipeline/04_create_variables.R")
-source("pipeline/05_analysis.R")
-source("pipeline/06_export.R")
+source(here::here("pipeline", "01_setup.R"))
+source(here::here("pipeline", "02_load_data.R"))
+source(here::here("pipeline", "03_merge_data.R"))
+source(here::here("pipeline", "04_create_variables.R"))
+source(here::here("pipeline", "05_analysis.R"))
+source(here::here("pipeline", "06_export.R"))
 
 # ----------------------------------------------------------------------------
 # COMPLETION
