@@ -10,7 +10,7 @@
 #   1. Create modules/<n>_module.R following the existing module pattern
 #   2. Source it in 00_main.R
 #   3. Add it to MODULES in 05_analysis.R
-#   4. Add a RUN_* flag here if needed test
+#   4. Add a RUN_* flag here if needed
 #
 # ============================================================================
 
