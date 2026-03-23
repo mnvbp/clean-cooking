@@ -13,7 +13,9 @@ Zambia-2024/outputs/
 .Rhistory
 .RData
 *.rds
-.Rproj.user/
+
+# Excel temp files
+~$*.xlsx
 
 # OS clutter
 .DS_Store
