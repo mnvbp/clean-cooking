@@ -11,6 +11,8 @@ Zambia-2024/outputs/
 .Rhistory
 .RData
 *.rds
+.rproj
+.Rproj.user
 
 # Excel temp files
 ~$*.xlsx
@@ -18,31 +20,4 @@ Zambia-2024/outputs/
 # OS clutter
 .DS_Store
 
-#old stata folder
-Zambia STATA DHS/DHSCoordinates.dta
-Zambia STATA DHS/Birth Recode/ZMBR71FL.DCT
-Zambia STATA DHS/Birth Recode/ZMBR71FL.DO
-Zambia STATA DHS/Birth Recode/ZMBR71FL.DTA
-Zambia STATA DHS/Birth Recode/ZMBR71FL.FRQ
-Zambia STATA DHS/Birth Recode/ZMBR71FL.FRW
-Zambia STATA DHS/Birth Recode/ZMBR71FL.MAP
-Zambia STATA DHS/Children's Recode/ZMKR71FL.DCT
-Zambia STATA DHS/Children's Recode/ZMKR71FL.DO
-Zambia STATA DHS/Children's Recode/ZMKR71FL.DTA
-Zambia STATA DHS/Children's Recode/ZMKR71FL.FRQ
-Zambia STATA DHS/Children's Recode/ZMKR71FL.FRW
-Zambia STATA DHS/Children's Recode/ZMKR71FL.MAP
-Zambia STATA DHS/Household Member Recode/ZMPR71FL.DCT
-Zambia STATA DHS/Household Member Recode/ZMPR71FL.DO
-Zambia STATA DHS/Household Member Recode/ZMPR71FL.DTA
-Zambia STATA DHS/Household Member Recode/ZMPR71FL.FRQ
-Zambia STATA DHS/Household Member Recode/ZMPR71FL.FRW
-Zambia STATA DHS/Household Member Recode/ZMPR71FL.MAP
-Zambia STATA DHS/Women's Recode/ZMIR71FL.DCT
-Zambia STATA DHS/Women's Recode/ZMIR71FL.DO
-Zambia STATA DHS/Women's Recode/ZMIR71FL.DOC
-Zambia STATA DHS/Women's Recode/ZMIR71FL.DTA
-Zambia STATA DHS/Women's Recode/ZMIR71FL.FRQ
-Zambia STATA DHS/Women's Recode/ZMIR71FL.FRW
-Zambia STATA DHS/Women's Recode/ZMIR71FL.MAP
-.Rproj.user
+
