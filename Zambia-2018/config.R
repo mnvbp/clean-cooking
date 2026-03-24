@@ -59,9 +59,9 @@ DATA_FILES <- list(
 
 RUN_REGRESSIONS  <- TRUE
 RUN_CROSSTABS    <- TRUE
-RUN_CORRELATIONS <- TRUE   # Must be TRUE for auto-sensitivity to work
-RUN_UNIVARIABLE  <- TRUE
-RUN_SENSITIVITY  <- TRUE
+RUN_CORRELATIONS <- FALSE   # Must be TRUE for auto-sensitivity to work
+RUN_UNIVARIABLE  <- FALSE
+RUN_SENSITIVITY  <- FALSE
 RUN_FOREST_PLOTS <- TRUE
 # Survey design options
 SURVEY_LONELY_PSU <- "adjust"  # Options: "adjust", "certainty", "remove"

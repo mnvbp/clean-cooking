@@ -8,6 +8,7 @@
 #   diagnostics.xlsx  — collinearity, sensitivity, univariable
 #
 # Plus results.rds for the full output_tables object.
+# Plus forest_plots/ subfolder with one PNG per outcome × population.
 #
 # Table names in output_tables are used to route to the correct file:
 #   "* - Crosstabs - *"    -> crosstabs.xlsx
@@ -15,6 +16,7 @@
 #   "* - Collinearity"     -> diagnostics.xlsx
 #   "* - Sensitivity - *"  -> diagnostics.xlsx
 #   "* - Univariable - *"  -> diagnostics.xlsx
+#   "* - Forest - *"       -> forest_plots/<name>.png
 #
 # To change routing, edit export_results() below.
 # To change sheet formatting, edit the write_*_sheet() functions.
@@ -33,21 +35,6 @@
 # SHEET NAME HELPER
 # ----------------------------------------------------------------------------
 
-#' Build a sheet name registry for a set of table names
-#'
-#' Generates short unique sheet names and a legend dataframe mapping
-#' each sheet name back to the full table name.
-#'
-#' Sheet name format: "<G> <Type><N> <Outcome>"
-#'   G       = W (Women) or C (Children)
-#'   Type    = R (Regression), X (Crosstab), S (Sensitivity),
-#'             U (Univariable), D (Collinearity)
-#'   N       = index within that type+group combination
-#'   Outcome = first 10 chars of outcome label
-#'
-#' @param names Character vector of full table names
-#' @return List with $sheets (named vector: full name -> sheet name)
-#'   and $legend (dataframe for the legend sheet)
 build_sheet_registry <- function(names) {
   type_code <- function(name) {
     if (grepl("- Crosstabs -",   name)) return("X")
@@ -63,7 +50,6 @@ build_sheet_registry <- function(names) {
     return("X")
   }
   
-  # Count per group+type combination for numbering
   counters <- list()
   sheets   <- character(length(names))
   
@@ -76,13 +62,11 @@ build_sheet_registry <- function(names) {
     counters[[key]] <- (counters[[key]] %||% 0) + 1
     n <- counters[[key]]
     
-    # Short outcome: strip group/type prefix, take first 12 chars
     short <- nm
     short <- gsub("^Women - |^Children - ", "", short)
     short <- gsub("^Regressions - |^Crosstabs - |^Sensitivity - [^-]+ - |^Univariable - [^-]+ - |^Collinearity", "", short)
     short <- trimws(short)
     short <- substr(short, 1, 12)
-    # Remove invalid Excel chars
     for (ch in c("/", "\\", ":", "*", "?", "[", "]", "(", ")")) {
       short <- gsub(ch, "", short, fixed = TRUE)
     }
@@ -108,9 +92,6 @@ build_sheet_registry <- function(names) {
 # CROSSTABS WRITER
 # ----------------------------------------------------------------------------
 
-#' Write all crosstab tables to a single Excel workbook
-#' One sheet per outcome, all stratifiers stacked with a Stratifier column
-#' First sheet is a legend mapping short sheet names to full table names
 export_crosstabs_xlsx <- function(tables, filepath) {
   wb       <- openxlsx::createWorkbook()
   registry <- build_sheet_registry(names(tables))
@@ -132,9 +113,6 @@ export_crosstabs_xlsx <- function(tables, filepath) {
 # REGRESSIONS WRITER
 # ----------------------------------------------------------------------------
 
-#' Write all regression tables to a single Excel workbook
-#' One sheet per outcome, weighted above unweighted with a section column
-#' First sheet is a legend mapping short sheet names to full table names
 export_regressions_xlsx <- function(tables, filepath) {
   wb       <- openxlsx::createWorkbook()
   registry <- build_sheet_registry(names(tables))
@@ -156,9 +134,6 @@ export_regressions_xlsx <- function(tables, filepath) {
 # DIAGNOSTICS WRITER
 # ----------------------------------------------------------------------------
 
-#' Write all diagnostic tables to a single Excel workbook
-#' Includes collinearity, sensitivity, and univariable — one sheet per table
-#' First sheet is a legend mapping short sheet names to full table names
 export_diagnostics_xlsx <- function(tables, filepath) {
   wb       <- openxlsx::createWorkbook()
   registry <- build_sheet_registry(names(tables))
@@ -177,104 +152,32 @@ export_diagnostics_xlsx <- function(tables, filepath) {
 
 
 # ----------------------------------------------------------------------------
-# MAIN EXPORT ROUTER
-# ----------------------------------------------------------------------------
-
-#' Export all results — routes each table to the correct Excel file
-#' and saves results.rds for re-export without re-running analysis
-export_results <- function(output_tables, output_dir) {
-  if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
-  
-  if (length(output_tables) == 0) {
-    message("No tables to export.")
-    return(invisible(NULL))
-  }
-  
-  # Save full results object
-  saveRDS(output_tables, file.path(output_dir, "results.rds"))
-  cat("  Saved: results.rds\n")
-  
-  # Route by name pattern
-  is_crosstab   <- grepl("- Crosstabs -",   names(output_tables))
-  is_regression <- grepl("- Regressions -", names(output_tables))
-  is_diagnostic <- grepl("Collinearity|- Sensitivity -|- Univariable -|Sample Sizes",
-                         names(output_tables))
-  
-  if (any(is_crosstab))
-    export_crosstabs_xlsx(output_tables[is_crosstab],
-                          file.path(output_dir, "crosstabs.xlsx"))
-  
-  if (any(is_regression))
-    export_regressions_xlsx(output_tables[is_regression],
-                            file.path(output_dir, "regressions.xlsx"))
-  
-  if (any(is_diagnostic))
-    export_diagnostics_xlsx(output_tables[is_diagnostic],
-                            file.path(output_dir, "diagnostics.xlsx"))
-  
-  # Warn about any unrouted tables
-  unrouted <- output_tables[!is_crosstab & !is_regression & !is_diagnostic]
-  if (length(unrouted) > 0)
-    warning("Tables not routed to any file:\n",
-            paste(" -", names(unrouted), collapse = "\n"))
-  
-  invisible(NULL)
-}
-
-# ============================================================================
-# ADDITIONS TO utils/export_helpers.R
-# ============================================================================
-#
-# 1. Add export_forest_plots_png() below the existing writer functions.
-# 2. Add the forest plot routing block inside export_results().
-#
-# In export_results(), add this block BEFORE the "Warn about unrouted tables"
-# section:
-#
-#   is_forest <- grepl("- Forest -", names(output_tables))
-#   if (any(is_forest))
-#     export_forest_plots_png(output_tables[is_forest],
-#                             file.path(output_dir, "forest_plots"))
-#
-# Also update the is_diagnostic pattern to avoid capturing forest tables:
-#   is_diagnostic <- grepl("Collinearity|- Sensitivity -|- Univariable -|Sample Sizes",
-#                          names(output_tables))
-#   (no change needed — "- Forest -" doesn't match any existing pattern)
-#
-# ============================================================================
-
-
-# ----------------------------------------------------------------------------
 # FOREST PLOTS WRITER
 # ----------------------------------------------------------------------------
 
-#' Save all forest plot ggplot objects as individual PNGs
-#'
-#' Creates one PNG per outcome × population. Output directory is created
-#' automatically. File names are sanitized from the table entry name.
-#'
-#' @param plots Named list of ggplot objects
-#'   Names follow pattern: "<Group> - Forest - <outcome_label>"
-#' @param output_dir Path to the forest_plots/ subfolder
+#' Save all forest plot ggplot objects as individual PNGs.
+#' One PNG per outcome x population. Directory is created automatically.
+#' File names are sanitized from the output_tables entry name.
 export_forest_plots_png <- function(plots, output_dir) {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   
   cfg        <- if (exists("FOREST_PLOT_CONFIG")) FOREST_PLOT_CONFIG else list()
-  png_width  <- cfg$png_width  %||% 8     # inches
-  png_height <- cfg$png_height %||% NULL  # NULL = auto-sized by term count
+  png_width  <- cfg$png_width  %||% 8
+  png_height <- cfg$png_height %||% NULL   # NULL = auto-sized by term count
   png_dpi    <- cfg$png_dpi    %||% 180
   
   for (name in names(plots)) {
     plot_obj <- plots[[name]]
     if (!inherits(plot_obj, "gg")) next
     
-    # Derive filename: "Women - Forest - Anemia (women)" -> "Women_Forest_Anemia_women.png"
+    # Sanitize name -> filename
+    # e.g. "Women - Forest - Anemia (women)" -> "Women_Forest_Anemia_women_.png"
     fname <- gsub("[^A-Za-z0-9_]", "_", name)
     fname <- gsub("_+", "_", fname)
     fname <- paste0(fname, ".png")
     fpath <- file.path(output_dir, fname)
     
-    # Auto-height: ~0.35 inches per term row, minimum 4 inches
+    # Auto-height: 0.35in per term row + 1.5in for title/axis/legend
     if (is.null(png_height)) {
       n_terms <- nrow(plot_obj$data)
       height  <- max(4, n_terms * 0.35 + 1.5)
@@ -298,4 +201,53 @@ export_forest_plots_png <- function(plots, output_dir) {
   }
   
   cat("  Forest plots written to:", output_dir, "\n")
+}
+
+
+# ----------------------------------------------------------------------------
+# MAIN EXPORT ROUTER
+# ----------------------------------------------------------------------------
+
+export_results <- function(output_tables, output_dir) {
+  if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+  
+  if (length(output_tables) == 0) {
+    message("No tables to export.")
+    return(invisible(NULL))
+  }
+  
+  # Save full results object
+  saveRDS(output_tables, file.path(output_dir, "results.rds"))
+  cat("  Saved: results.rds\n")
+  
+  # Route by name pattern
+  is_crosstab   <- grepl("- Crosstabs -",   names(output_tables))
+  is_regression <- grepl("- Regressions -", names(output_tables))
+  is_diagnostic <- grepl("Collinearity|- Sensitivity -|- Univariable -|Sample Sizes",
+                         names(output_tables))
+  is_forest     <- grepl("- Forest -",      names(output_tables))
+  
+  if (any(is_crosstab))
+    export_crosstabs_xlsx(output_tables[is_crosstab],
+                          file.path(output_dir, "crosstabs.xlsx"))
+  
+  if (any(is_regression))
+    export_regressions_xlsx(output_tables[is_regression],
+                            file.path(output_dir, "regressions.xlsx"))
+  
+  if (any(is_diagnostic))
+    export_diagnostics_xlsx(output_tables[is_diagnostic],
+                            file.path(output_dir, "diagnostics.xlsx"))
+  
+  if (any(is_forest))
+    export_forest_plots_png(output_tables[is_forest],
+                            file.path(output_dir, "forest_plots"))
+  
+  # Warn about any unrouted tables
+  unrouted <- output_tables[!is_crosstab & !is_regression & !is_diagnostic & !is_forest]
+  if (length(unrouted) > 0)
+    warning("Tables not routed to any file:\n",
+            paste(" -", names(unrouted), collapse = "\n"))
+  
+  invisible(NULL)
 }
