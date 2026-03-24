@@ -62,7 +62,7 @@ source(here::here("modules", "regression_module.R"))
 source(here::here("modules", "crosstab_module.R"))
 source(here::here("modules", "univariable_module.R"))
 source(here::here("modules", "sensitivity_module.R"))
-
+source(here::here("modules", "forest_plot_module.R"))
 # ----------------------------------------------------------------------------
 # RUN PIPELINE
 # ----------------------------------------------------------------------------

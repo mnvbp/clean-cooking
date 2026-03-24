@@ -22,7 +22,8 @@ MODULES <- list(
   REGRESSION_MODULE,
   CROSSTAB_MODULE,
   UNIVARIABLE_MODULE,
-  SENSITIVITY_MODULE
+  SENSITIVITY_MODULE,
+  FOREST_PLOT_MODULE
 )
 
 output_tables <- list()
@@ -32,11 +33,11 @@ for (mod in MODULES) {
     cat("\n  Module:", mod$name, "\n")
     
     # Sensitivity module receives output_tables so it can read collinearity results
-    result <- if (mod$name == "Sensitivity") {
-      mod$run(output_tables)
-    } else {
-      mod$run()
-    }
+        result <- if (mod$name %in% c("Sensitivity", "Forest Plots")) {
+          mod$run(output_tables)
+        } else {
+          mod$run()
+        }
     
     output_tables <- c(output_tables, result)
     cat("  Done:", mod$name, "—", length(result), "table(s) added.\n")
