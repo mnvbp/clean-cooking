@@ -26,12 +26,12 @@ SURVEY_CONFIGS <- list(
   list(
     name    = "Zambia 2018",
     config  = "Zambia-2018/config.R",
-    enabled = FALSE
+    enabled = TRUE
   ),
   list(
     name    = "Zambia 2024",
     config  = "Zambia-2024/config.R",
-    enabled = TRUE
+    enabled = FALSE
   )
 )
 

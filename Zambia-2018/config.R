@@ -62,7 +62,7 @@ RUN_CROSSTABS    <- TRUE
 RUN_CORRELATIONS <- TRUE   # Must be TRUE for auto-sensitivity to work
 RUN_UNIVARIABLE  <- TRUE
 RUN_SENSITIVITY  <- TRUE
-
+RUN_FOREST_PLOTS <- TRUE
 # Survey design options
 SURVEY_LONELY_PSU <- "adjust"  # Options: "adjust", "certainty", "remove"
 
@@ -375,3 +375,34 @@ ANEMIA_AGE_MAX_MONTHS <- 59
 
 # Low birth weight threshold (grams)
 LOW_BIRTH_WEIGHT_THRESHOLD <- 2500
+
+# ============================================================================
+# 11. FOREST PLOT CONFIGURATION
+# ============================================================================
+# Controls visual appearance and output dimensions for forest plots.
+# All entries are optional — omit any to use the built-in default.
+#
+# x_min / x_max: manual x-axis limits (OR scale). Leave NULL for auto.
+#   Example: x_min = 0.2, x_max = 5.0
+#
+# sig_color:  color for significant (p < 0.05) points and CIs
+# null_color: color for non-significant points and CIs
+# ref_color:  color of the vertical reference line at OR = 1
+#
+# png_width:  output width in inches (default 8)
+# png_height: output height in inches — NULL = auto-sized by row count
+# png_dpi:    resolution (default 180 for screen-quality; use 300 for print)
+
+FOREST_PLOT_CONFIG <- list(
+  x_min       = NULL,        # NULL = auto
+  x_max       = NULL,        # NULL = auto
+  point_size  = 3,
+  line_size   = 0.5,
+  base_size   = 11,
+  sig_color   = "#1D9E75",   # c-teal 400 — significant associations
+  null_color  = "#888780",   # c-gray 400 — non-significant
+  ref_color   = "#B4B2A9",   # c-gray 200 — reference line at OR=1
+  png_width   = 8,
+  png_height  = NULL,        # NULL = auto (0.35in per term + 1.5in header)
+  png_dpi     = 180
+)

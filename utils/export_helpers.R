@@ -220,3 +220,82 @@ export_results <- function(output_tables, output_dir) {
   
   invisible(NULL)
 }
+
+# ============================================================================
+# ADDITIONS TO utils/export_helpers.R
+# ============================================================================
+#
+# 1. Add export_forest_plots_png() below the existing writer functions.
+# 2. Add the forest plot routing block inside export_results().
+#
+# In export_results(), add this block BEFORE the "Warn about unrouted tables"
+# section:
+#
+#   is_forest <- grepl("- Forest -", names(output_tables))
+#   if (any(is_forest))
+#     export_forest_plots_png(output_tables[is_forest],
+#                             file.path(output_dir, "forest_plots"))
+#
+# Also update the is_diagnostic pattern to avoid capturing forest tables:
+#   is_diagnostic <- grepl("Collinearity|- Sensitivity -|- Univariable -|Sample Sizes",
+#                          names(output_tables))
+#   (no change needed — "- Forest -" doesn't match any existing pattern)
+#
+# ============================================================================
+
+
+# ----------------------------------------------------------------------------
+# FOREST PLOTS WRITER
+# ----------------------------------------------------------------------------
+
+#' Save all forest plot ggplot objects as individual PNGs
+#'
+#' Creates one PNG per outcome × population. Output directory is created
+#' automatically. File names are sanitized from the table entry name.
+#'
+#' @param plots Named list of ggplot objects
+#'   Names follow pattern: "<Group> - Forest - <outcome_label>"
+#' @param output_dir Path to the forest_plots/ subfolder
+export_forest_plots_png <- function(plots, output_dir) {
+  if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+  
+  cfg        <- if (exists("FOREST_PLOT_CONFIG")) FOREST_PLOT_CONFIG else list()
+  png_width  <- cfg$png_width  %||% 8     # inches
+  png_height <- cfg$png_height %||% NULL  # NULL = auto-sized by term count
+  png_dpi    <- cfg$png_dpi    %||% 180
+  
+  for (name in names(plots)) {
+    plot_obj <- plots[[name]]
+    if (!inherits(plot_obj, "gg")) next
+    
+    # Derive filename: "Women - Forest - Anemia (women)" -> "Women_Forest_Anemia_women.png"
+    fname <- gsub("[^A-Za-z0-9_]", "_", name)
+    fname <- gsub("_+", "_", fname)
+    fname <- paste0(fname, ".png")
+    fpath <- file.path(output_dir, fname)
+    
+    # Auto-height: ~0.35 inches per term row, minimum 4 inches
+    if (is.null(png_height)) {
+      n_terms <- nrow(plot_obj$data)
+      height  <- max(4, n_terms * 0.35 + 1.5)
+    } else {
+      height <- png_height
+    }
+    
+    tryCatch({
+      ggplot2::ggsave(
+        filename = fpath,
+        plot     = plot_obj,
+        width    = png_width,
+        height   = height,
+        dpi      = png_dpi,
+        bg       = "white"
+      )
+      cat("  Saved:", fname, "\n")
+    }, error = function(e) {
+      warning(paste("Forest plot save failed for", name, ":", e$message))
+    })
+  }
+  
+  cat("  Forest plots written to:", output_dir, "\n")
+}

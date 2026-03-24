@@ -22,7 +22,9 @@ pacman::p_load(
   tidylog,    # Logged dplyr operations
   car,        # VIF and regression diagnostics
   future,     # Parallel execution backend
-  furrr       # Parallel map functions (future-backed purrr)
+  furrr,       # Parallel map functions (future-backed purrr)
+  ggplot2,
+  scales
 )
 
 select <- dplyr::select
