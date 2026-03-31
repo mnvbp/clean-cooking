@@ -14,6 +14,7 @@ Zambia-2024/outputs/
 .rproj
 .Rproj.user
 .RDataTmp
+clean-cooking.Rproj
 
 # Excel temp files
 ~$*.xlsx
