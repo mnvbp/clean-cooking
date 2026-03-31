@@ -13,6 +13,7 @@ Zambia-2024/outputs/
 *.rds
 .rproj
 .Rproj.user
+.RDataTmp
 
 # Excel temp files
 ~$*.xlsx
