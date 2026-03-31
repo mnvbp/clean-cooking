@@ -1,6 +1,5 @@
-# ============================================================================
 # modules/sensitivity_module.R
-# ============================================================================
+
 # Runs sensitivity analyses in two layers:
 #
 #   1. AUTO runs — derived from collinearity results in output_tables.
@@ -23,7 +22,7 @@
 #
 # Table names: "<Group> - Sensitivity - <label>"
 # Routes to diagnostics.xlsx via "- Sensitivity -" pattern.
-# ============================================================================
+
 
 SENSITIVITY_MODULE <- list(
   name    = "Sensitivity",

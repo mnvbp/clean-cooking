@@ -1,6 +1,6 @@
-# ============================================================================
+
 # CONFIG.R - Survey Configuration -- Zambia 2018
-# ============================================================================
+
 #
 # Edit this file to change survey, country, variables, or file paths.
 # All other scripts read from this configuration — nothing else needs
@@ -12,12 +12,12 @@
 #   3. Add it to MODULES in 05_analysis.R
 #   4. Add a RUN_* flag here if needed
 #
-# ============================================================================
 
 
-# ============================================================================
+
+
 # 1. SURVEY IDENTIFICATION
-# ============================================================================
+
 
 SURVEY_NAME  <- "Zambia DHS 2018"
 COUNTRY_CODE <- "ZM"
@@ -26,9 +26,9 @@ DHS_PHASE    <- 7
 AUTHOR       <- "Manav Parikh"
 
 
-# ============================================================================
+
 # 2. FILE PATHS
-# ============================================================================
+
 # Always run the pipeline by sourcing 00_main.R — paths are relative to
 # the project root set by setwd() in that script.
 
@@ -51,9 +51,9 @@ DATA_FILES <- list(
 # DATA_FILES$mr <- "ZMMR71FL.DTA"
 
 
-# ============================================================================
+
 # 3. ANALYSIS FLAGS
-# ============================================================================
+
 # Toggle analyses on/off. RUN_CORRELATIONS should remain TRUE when using
 # RUN_SENSITIVITY — sensitivity runs are auto-derived from collinearity results.
 
@@ -78,9 +78,9 @@ USE_CACHE <- FALSE
 N_CORES   <- NULL
 
 
-# ============================================================================
+
 # 4. OUTCOMES
-# ============================================================================
+
 #
 # Each outcome requires a label. weight_override is optional — omit or set
 # to NULL to use the population default from VAR_MAP_*.
@@ -119,9 +119,9 @@ OUTCOMES_CHILDREN <- list(
 )
 
 
-# ============================================================================
+
 # 5. PREDICTORS & STRATIFIERS
-# ============================================================================
+
 #
 # To add a predictor: add the name here and add variable creation logic
 # in utils/variable_helpers.R and 04_create_variables.R.
@@ -169,9 +169,9 @@ STRATIFIERS_CHILDREN <- c(
 WEALTH_REFERENCE <- "richest"
 
 
-# ============================================================================
+
 # 6. POPULATIONS
-# ============================================================================
+
 # Defines all analysis populations. Each entry references the data object
 # created in 04_create_variables.R and the config objects defined above.
 # All modules loop over POPULATIONS automatically — adding a new population
@@ -204,9 +204,9 @@ POPULATIONS <- list(
 )
 
 
-# ============================================================================
+
 # 7. VARIABLE MAPPINGS
-# ============================================================================
+
 # Maps source DHS variable names to their roles in the analysis.
 # Update these when adapting to a new survey, country, or DHS phase.
 # Used by utils/variable_helpers.R to create all derived variables.
@@ -270,9 +270,9 @@ VAR_MAP_CHILDREN <- list(
 )
 
 
-# ============================================================================
+
 # 7. FUEL DEFINITIONS (WHO Classification)
-# ============================================================================
+
 
 # Clean fuels: electricity, LPG, natural gas, biogas, solar
 CLEAN_FUELS <- c(1, 2, 3, 4, 12)
@@ -287,9 +287,9 @@ RUN_FUEL_DISTRIBUTION    <- TRUE
 FUEL_DISTRIBUTION_STRATA <- c("region", "urban", "wealth")
 
 
-# ============================================================================
+
 # 8. COLLINEARITY & SENSITIVITY
-# ============================================================================
+
 # Auto sensitivity runs are generated from collinearity results when
 # RUN_SENSITIVITY = TRUE. Any predictor pair with |r| >= THRESHOLD_R
 # triggers a run dropping each variable in the pair individually.
@@ -313,9 +313,9 @@ COLLINEARITY_THRESHOLD_VIF <- 5.0   # VIF threshold (for future VIF checks)
 SENSITIVITY_ANALYSES <- list()
 
 
-# ============================================================================
+
 # 9. UNIVARIABLE ANALYSIS
-# ============================================================================
+
 # IAP predictors for unadjusted single-variable regressions.
 # Active list derived as intersect(PREDICTORS_*, IAP_PREDICTORS) at runtime
 # so this never goes stale when predictors are added or removed above.
@@ -328,9 +328,9 @@ IAP_PREDICTORS <- c(
 )
 
 
-# ============================================================================
+
 # 10. MERGE & FILTER CONFIGURATION
-# ============================================================================
+
 # Rarely needs editing — only change when adapting to a new DHS phase
 # that uses different merge keys or filter variables.
 
@@ -376,9 +376,9 @@ ANEMIA_AGE_MAX_MONTHS <- 59
 # Low birth weight threshold (grams)
 LOW_BIRTH_WEIGHT_THRESHOLD <- 2500
 
-# ============================================================================
+
 # 11. FOREST PLOT CONFIGURATION
-# ============================================================================
+
 # Controls visual appearance and output dimensions for forest plots.
 # All entries are optional — omit any to use the built-in default.
 #

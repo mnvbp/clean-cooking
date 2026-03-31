@@ -1,13 +1,10 @@
-# ============================================================================
 # utils/variable_helpers.R - Variable Creation Functions
-# ============================================================================
-#
+
 # These functions provide config-driven variable creation to:
 # 1. Eliminate duplication between women/children variable creation
 # 2. Make the code adaptable to different DHS phases/countries
 # 3. Centralize recoding logic for consistency
-#
-# ============================================================================
+
 #
 # METHODOLOGICAL DECISIONS LOG
 # ----------------------------
@@ -49,7 +46,7 @@
 #    - DECISION: Different definitions reflect different exposure models
 #    - See config.R for the specific codes used in each pipeline
 #
-# ============================================================================
+
 
 #' Recode a variable to binary (1/0/NA)
 #' 
@@ -347,9 +344,9 @@ create_low_birthweight <- function(bw_values,
 }
 
 
-# ============================================================================
+
 # MASTER FUNCTION: Create all variables using config mappings
-# ============================================================================
+
 
 #' Create all analysis variables for children dataset
 #' 

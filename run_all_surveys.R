@@ -1,17 +1,16 @@
-# ============================================================================
 # RUN_ALL_SURVEYS.R
-# ============================================================================
+
 # Meta-runner: iterates through multiple survey configs.
 # Place this at repo root alongside clean-cooking.Rproj.
-# ============================================================================
 
-# ============================================================================
+
+
 # INITIALIZE PATHS
-# ============================================================================
+
 if (!require("here")) install.packages("here")
 library(here)
 
-# Establish the root once and for all
+#establish root
 REPO_ROOT <- here::here()
 
 # Safety Check: Verify we are in the right place
@@ -19,9 +18,9 @@ if (!file.exists(here::here("run_all_surveys.R"))) {
   stop("Root Error: run_all_surveys.R not found in the identified project root: ", REPO_ROOT)
 }
 
-# ============================================================================
+
 # SURVEY REGISTRY
-# ============================================================================
+
 SURVEY_CONFIGS <- list(
   list(
     name    = "Zambia 2018",
@@ -35,15 +34,15 @@ SURVEY_CONFIGS <- list(
   )
 )
 
-# ============================================================================
+
 # OPTIONS
-# ============================================================================
+
 STOP_ON_ERROR <- FALSE
 VERBOSE       <- TRUE
 
-# ============================================================================
+
 # RUNNER
-# ============================================================================
+
 run_start <- Sys.time()
 
 # Filter to enabled surveys
@@ -108,9 +107,9 @@ for (i in seq_along(enabled_surveys)) {
   })
 }
 
-# ============================================================================
+
 # SUMMARY
-# ============================================================================
+
 run_end       <- Sys.time()
 total_elapsed <- round(difftime(run_end, run_start, units = "secs"), 1)
 

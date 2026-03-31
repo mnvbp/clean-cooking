@@ -1,13 +1,12 @@
-# ============================================================================
 # modules/univariable_module.R
-# ============================================================================
+
 # Runs unadjusted (single-predictor) regressions for IAP variables only.
 # Loops over POPULATIONS automatically. Runs are parallelized across all
 # predictor-population combinations.
 #
 # Table names: "<Group> - Univariable - <predictor>"
 # Routes to diagnostics.xlsx via "- Univariable -" pattern.
-# ============================================================================
+
 
 UNIVARIABLE_MODULE <- list(
   name    = "Univariable",

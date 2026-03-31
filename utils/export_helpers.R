@@ -1,6 +1,5 @@
-# ============================================================================
 # utils/export_helpers.R - Export Functions
-# ============================================================================
+
 #
 # Three Excel files are produced:
 #   crosstabs.xlsx    — one sheet per outcome, all stratifiers stacked
@@ -21,7 +20,7 @@
 # To change routing, edit export_results() below.
 # To change sheet formatting, edit the write_*_sheet() functions.
 #
-# ============================================================================
+
 
 
 # ----------------------------------------------------------------------------

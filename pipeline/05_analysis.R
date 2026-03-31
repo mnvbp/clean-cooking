@@ -1,6 +1,5 @@
-# ============================================================================
 # 05_ANALYSIS.R - Run Analyses
-# ============================================================================
+
 #
 # Executes all registered modules in order and collects results into a single
 # named list: output_tables.
@@ -12,7 +11,7 @@
 #
 # That's it — no changes needed to export or any other script.
 #
-# ============================================================================
+
 
 cat("Running analyses...\n")
 

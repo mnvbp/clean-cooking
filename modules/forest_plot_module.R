@@ -1,6 +1,6 @@
-# ============================================================================
+
 # modules/forest_plot_module.R
-# ============================================================================
+
 #
 # Generates one forest plot PNG per outcome × population combination.
 # Reads weighted regression results from output_tables (already computed
@@ -11,7 +11,7 @@
 #
 # Requires: ggplot2 (loaded in 01_setup.R via pacman)
 #
-# ============================================================================
+
 
 FOREST_PLOT_MODULE <- list(
   name    = "Forest Plots",
@@ -53,9 +53,9 @@ FOREST_PLOT_MODULE <- list(
 )
 
 
-# ============================================================================
+
 # build_forest_plot()
-# ============================================================================
+
 # Constructs a single ggplot2 forest plot for one outcome × population.
 #
 # Design decisions:
@@ -65,7 +65,7 @@ FOREST_PLOT_MODULE <- list(
 #   - Points scaled by significance (p < 0.05 = filled, otherwise open)
 #   - x-axis log-scaled; limits from FOREST_PLOT_CONFIG or auto
 #   - Color: significant = c-teal hex, non-significant = c-gray hex
-# ============================================================================
+
 
 build_forest_plot <- function(df, group_label, outcome_label) {
 
@@ -188,9 +188,9 @@ build_forest_plot <- function(df, group_label, outcome_label) {
 }
 
 
-# ============================================================================
+
 # Helper: clean predictor term labels for display
-# ============================================================================
+
 # Converts raw R term names (e.g. "wealth_factorpoorest") to readable labels.
 # Wealth quintiles get "  Poorest", "  Poorer" etc. (indented) so they visually
 # group under the "Wealth quintile" header term which is NOT in the model.
@@ -229,9 +229,9 @@ clean_term_label <- function(terms) {
 }
 
 
-# ============================================================================
+
 # Helper: generate sensible log-scale x-axis breaks
-# ============================================================================
+
 log_breaks <- function(lo, hi) {
   candidates <- c(0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7,
                   0.8, 0.9, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0,
@@ -240,15 +240,15 @@ log_breaks <- function(lo, hi) {
 }
 
 
-# ============================================================================
+
 # Helper: format OR (95% CI) label string
-# ============================================================================
+
 format_or_ci <- function(est, lo, hi) {
   sprintf("%.2f (%.2f\u2013%.2f)", est, lo, hi)
 }
 
 
-# ============================================================================
+
 # Null-coalescing operator (mirrors export_helpers.R)
-# ============================================================================
+
 `%||%` <- function(x, y) if (is.null(x)) y else x

@@ -1,6 +1,5 @@
-# ============================================================================
 # 04_CREATE_VARIABLES.R - Derive Analysis Variables
-# ============================================================================
+
 #
 # This script uses the variable mappings from config.R and helper functions
 # from utils/variable_helpers.R to create all analysis variables.
@@ -10,7 +9,7 @@
 # - Shared recoding logic (variable_helpers.R)
 # - Easy to adapt for different DHS phases or countries
 #
-# ============================================================================
+
 
 cat("Creating analysis variables...\n")
 

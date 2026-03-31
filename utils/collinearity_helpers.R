@@ -1,6 +1,5 @@
-# ============================================================================
 # utils/collinearity_helpers.R - Collinearity Diagnostics
-# ============================================================================
+
 
 #' Compute pairwise correlations between predictor variables
 #'

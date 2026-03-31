@@ -1,11 +1,10 @@
-# ============================================================================
 # 03_MERGE_DATA.R - Merge and Combine Datasets
-# ============================================================================
+
 #
 # Merges PR with KR (children) and IR (women) using config-driven logic.
 # Logs N at each step to pipeline_log for sample size tracking.
 #
-# ============================================================================
+
 
 cat("Merging datasets...\n")
 

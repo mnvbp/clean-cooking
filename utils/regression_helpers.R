@@ -1,6 +1,5 @@
-# ============================================================================
 # utils/regression_helpers.R - Regression Analysis Functions
-# ============================================================================
+
 
 #' Get weight variable for an outcome (default or override)
 get_outcome_weight <- function(outcome_name, outcomes_config, default_weight) {

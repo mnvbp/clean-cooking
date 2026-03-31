@@ -1,6 +1,5 @@
-# ============================================================================
 # utils/sample_tracking_helpers.R - Pipeline Sample Size Tracking
-# ============================================================================
+
 #
 # Tracks N at each step of the data pipeline across all population groups.
 # Works for any DHS study design — add log_step() calls anywhere in the
@@ -11,7 +10,7 @@
 #   pipeline_log <- log_step(pipeline_log, "Children", "De facto filter",
 #                            nrow(data), variable = "hv103", condition = "== 1")
 #
-# ============================================================================
+
 
 
 #' Initialize an empty pipeline log

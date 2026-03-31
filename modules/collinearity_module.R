@@ -1,9 +1,8 @@
-# ============================================================================
 # modules/collinearity_module.R
-# ============================================================================
+
 # Run first — results feed into the auto-sensitivity module.
 # Loops over POPULATIONS automatically.
-# ============================================================================
+
 
 COLLINEARITY_MODULE <- list(
   name    = "Collinearity",
