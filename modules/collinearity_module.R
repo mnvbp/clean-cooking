@@ -7,6 +7,7 @@
 COLLINEARITY_MODULE <- list(
   name    = "Collinearity",
   enabled = function() RUN_CORRELATIONS,
+  export  = list(file = "diagnostics.xlsx", type = "xlsx"),
   run     = function() {
     out <- list()
     for (pop_key in names(POPULATIONS)) {

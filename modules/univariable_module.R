@@ -11,6 +11,7 @@
 UNIVARIABLE_MODULE <- list(
   name    = "Univariable",
   enabled = function() RUN_UNIVARIABLE,
+  export  = list(file = "diagnostics.xlsx", type = "xlsx"),
   run     = function() {
     
     # Build flat job list — one per IAP predictor per population

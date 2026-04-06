@@ -7,6 +7,7 @@
 REGRESSION_MODULE <- list(
   name    = "Regressions",
   enabled = function() RUN_REGRESSIONS,
+  export  = list(file = "regressions.xlsx", type = "xlsx"),
   run     = function() {
     out <- list()
     for (pop_key in names(POPULATIONS)) {

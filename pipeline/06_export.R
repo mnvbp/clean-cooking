@@ -6,7 +6,7 @@
 
 cat("Exporting results...\n\n")
 
-export_results(output_tables, OUTPUT_DIR)
+export_results(output_tables, OUTPUT_DIR, MODULES)
 
 # ----------------------------------------------------------------------------
 # SUMMARY

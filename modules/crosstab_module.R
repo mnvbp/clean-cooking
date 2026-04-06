@@ -7,6 +7,7 @@
 CROSSTAB_MODULE <- list(
   name    = "Crosstabs",
   enabled = function() RUN_CROSSTABS,
+  export  = list(file = "crosstabs.xlsx", type = "xlsx"),
   run     = function() {
     out <- list()
     for (pop_key in names(POPULATIONS)) {
