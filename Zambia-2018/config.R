@@ -325,47 +325,6 @@ IAP_PREDICTORS <- c(
 )
 
 
-
-# 10. MERGE & FILTER CONFIGURATION
-
-# Rarely needs editing — only change when adapting to a new DHS phase
-# that uses different merge keys or filter variables.
-
-MERGE_CHILDREN <- list(
-  kr_select_vars = c("v001", "v002", "b16", "b19", "h31", "m19", "m19a"),
-  kr_filter_expr = "b16 > 0 & !is.na(b16)",
-  join_by        = c("hv001" = "v001", "hv002" = "v002", "hvidx" = "b16"),
-  join_type      = "left"
-)
-
-MERGE_WOMEN <- list(
-  join_by   = c("v001", "v002", "v003"),
-  join_type = "inner"
-)
-
-# De facto population recommended for biomarker-based indicators.
-# See Guide to DHS Statistics, Section 1.37.
-CHILDREN_FILTER <- list(
-  de_facto = list(
-    var               = "hv103",
-    val               = 1,
-    filter_after_join = FALSE
-  ),
-  age = list(
-    var               = "b19",
-    max               = 60,          # < 60 months (under 5 years)
-    filter_after_join = TRUE         # b19 comes from KR, available only after join
-  )
-)
-
-WOMEN_FILTER <- list(
-  de_facto = list(
-    var               = "hv103",
-    val               = 1,
-    filter_after_join = FALSE
-  )
-)
-
 # Anemia age restriction (months)
 ANEMIA_AGE_MIN_MONTHS <- 6
 ANEMIA_AGE_MAX_MONTHS <- 59

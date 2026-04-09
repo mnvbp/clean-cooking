@@ -255,8 +255,8 @@ create_anemia <- function(anemia_values,
 #' Children outside this age range are set to NA.
 create_child_anemia <- function(anemia_values, 
                                 age_months,
-                                min_months = ANEMIA_AGE_MIN_MONTHS,
-                                max_months = ANEMIA_AGE_MAX_MONTHS,
+                                min_months,
+                                max_months,
                                 anemic_codes = c(1, 2, 3),
                                 not_anemic_code = 4) {
   case_when(
@@ -334,7 +334,7 @@ create_cough <- function(cough_values, yes_codes = c(1, 2), no_code = 0) {
 #' weights are systematically different from recall-based weights.
 create_low_birthweight <- function(bw_values, 
                                    bw_flag, 
-                                   threshold = LOW_BIRTH_WEIGHT_THRESHOLD,
+                                   threshold,
                                    valid_flag_codes = 1) {
   case_when(
     bw_flag %in% valid_flag_codes & bw_values < threshold ~ 1L,
@@ -376,11 +376,14 @@ create_children_variables <- function(data, var_map = VAR_MAP_CHILDREN) {
       anemic = create_child_anemia(
         anemia_values = !!sym(var_map$anemia_var),
         age_months = !!sym(var_map$age_months_var)
+        min_months = ANEMIA_AGE_MIN_MONTHS,
+        max_months = ANEMIA_AGE_MAX_MONTHS
       ),
       cough = create_cough(!!sym(var_map$cough_var)),
       low_birthweight = create_low_birthweight(
         bw_values = !!sym(var_map$bw_var),
-        bw_flag = !!sym(var_map$bw_flag_var)
+        bw_flag = !!sym(var_map$bw_flag_var),
+        threshold = LOW_BIRTH_WEIGHT_THRESHOLD
       ),
       
       # Predictors
