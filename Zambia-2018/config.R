@@ -292,7 +292,6 @@ FUEL_DISTRIBUTION_STRATA <- c("region", "urban", "wealth")
 # triggers a run dropping each variable in the pair individually.
 
 COLLINEARITY_THRESHOLD_R   <- 0.5   # Pairwise correlation threshold
-COLLINEARITY_THRESHOLD_VIF <- 5.0   # VIF threshold (for future VIF checks)
 
 # Manual sensitivity runs — add here for non-collinearity-driven runs.
 # Use population keys matching POPULATIONS above. Each entry needs a label

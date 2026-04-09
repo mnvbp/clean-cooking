@@ -26,8 +26,6 @@ pacman::p_load(
   scales
 )
 
-select <- dplyr::select
-
 options(survey.lonely.psu = SURVEY_LONELY_PSU)
 
 # ----------------------------------------------------------------------------

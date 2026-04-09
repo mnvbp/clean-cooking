@@ -148,35 +148,6 @@ create_smoking <- function(smoke_values,
 }
 
 
-#' Create poorest quintile indicator (vs middle)
-#' 
-#' @param wealth_values Vector of wealth quintile codes (1-5)
-#' @param poor_code Code for poorest quintile (default 1)
-#' @param reference_code Code for reference category (default 3 = middle)
-#' @return Integer vector: 1 = poorest, 0 = middle, NA = other quintiles
-#' 
-#' @details
-#' DHS hv270 wealth index quintiles:
-#'   1 = poorest
-#'   2 = poorer
-#'   3 = middle
-#'   4 = richer
-#'   5 = richest
-#' 
-#' METHODOLOGICAL NOTE (Issue #17):
-#' This function creates a DICHOTOMOUS variable comparing only poorest vs middle.
-#' Quintiles 2 (poorer), 4 (richer), and 5 (richest) are set to NA and will be
-#' EXCLUDED from regressions using this variable. This results in ~60% of
-#' observations being dropped for this predictor.
-#' 
-#' If you need to analyze all wealth levels, either:
-#'   - Use the raw 'wealth' variable (hv270) as a factor in regressions
-#'   - Create different contrasts (e.g., poorest vs richest, or below/above median)
-create_poorest <- function(wealth_values, poor_code = 1, reference_code = 3) {
-  recode_binary(wealth_values, yes_values = poor_code, no_values = reference_code)
-}
-
-
 #' Create household head sex indicator
 #' 
 #' @param sex_values Vector of sex codes (1=male, 2=female typically)
@@ -375,7 +346,7 @@ create_children_variables <- function(data, var_map = VAR_MAP_CHILDREN) {
       # Outcomes
       anemic = create_child_anemia(
         anemia_values = !!sym(var_map$anemia_var),
-        age_months = !!sym(var_map$age_months_var)
+        age_months = !!sym(var_map$age_months_var),
         min_months = ANEMIA_AGE_MIN_MONTHS,
         max_months = ANEMIA_AGE_MAX_MONTHS
       ),
