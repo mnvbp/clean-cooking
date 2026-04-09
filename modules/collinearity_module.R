@@ -12,8 +12,8 @@ COLLINEARITY_MODULE <- list(
     out <- list()
     for (pop_key in names(POPULATIONS)) {
       pop        <- POPULATIONS[[pop_key]]
-      data       <- get(pop$data)
-      predictors <- get(pop$predictors)
+      data       <- pop$data
+      predictors <- pop$predictors
       out        <- c(out, run_pairwise_correlations(predictors, data, pop$label))
     }
     out

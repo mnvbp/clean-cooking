@@ -30,6 +30,10 @@ cat("  Creating women variables using VAR_MAP_WOMEN...\n")
 women_data <- create_women_variables(merged_women, VAR_MAP_WOMEN)
 
 
+# Wire data objects into POPULATIONS now that they exist
+POPULATIONS$women$data    <- women_data
+POPULATIONS$children$data <- children_data
+
 # ----------------------------------------------------------------------------
 # CREATE SURVEY DESIGNS
 # ----------------------------------------------------------------------------

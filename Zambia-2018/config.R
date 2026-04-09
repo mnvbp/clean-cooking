@@ -168,44 +168,7 @@ STRATIFIERS_CHILDREN <- c(
 # Wealth quintile reference category
 WEALTH_REFERENCE <- "richest"
 
-
-
-# 6. POPULATIONS
-
-# Defines all analysis populations. Each entry references the data object
-# created in 04_create_variables.R and the config objects defined above.
-# All modules loop over POPULATIONS automatically — adding a new population
-# (e.g. men) only requires adding an entry here and creating the data object
-# in 04_create_variables.R.
-#
-# To add a population:
-#   1. Add an entry here
-#   2. Add VAR_MAP_*, OUTCOMES_*, PREDICTORS_*, STRATIFIERS_* above
-#   3. Add variable creation logic in utils/variable_helpers.R and
-#      04_create_variables.R
-
-POPULATIONS <- list(
-  women = list(
-    label       = "Women",
-    data        = "women_data",        # object name created in 04_create_variables.R
-    outcomes    = "OUTCOMES_WOMEN",
-    predictors  = "PREDICTORS_WOMEN",
-    var_map     = "VAR_MAP_WOMEN",
-    stratifiers = "STRATIFIERS_WOMEN"
-  ),
-  children = list(
-    label       = "Children",
-    data        = "children_data",
-    outcomes    = "OUTCOMES_CHILDREN",
-    predictors  = "PREDICTORS_CHILDREN",
-    var_map     = "VAR_MAP_CHILDREN",
-    stratifiers = "STRATIFIERS_CHILDREN"
-  )
-)
-
-
-
-# 7. VARIABLE MAPPINGS
+# 6. VARIABLE MAPPINGS
 
 # Maps source DHS variable names to their roles in the analysis.
 # Update these when adapting to a new survey, country, or DHS phase.
@@ -269,6 +232,40 @@ VAR_MAP_CHILDREN <- list(
   indoor_codes  = c(1, 2)
 )
 
+
+
+# 7. POPULATIONS
+
+# Defines all analysis populations. Each entry references the data object
+# created in 04_create_variables.R and the config objects defined above.
+# All modules loop over POPULATIONS automatically — adding a new population
+# (e.g. men) only requires adding an entry here and creating the data object
+# in 04_create_variables.R.
+#
+# To add a population:
+#   1. Add an entry here
+#   2. Add VAR_MAP_*, OUTCOMES_*, PREDICTORS_*, STRATIFIERS_* above
+#   3. Add variable creation logic in utils/variable_helpers.R and
+#      04_create_variables.R
+
+POPULATIONS <- list(
+  women = list(
+    label       = "Women",
+    data        = NULL,        # object name created in 04_create_variables.R
+    outcomes    = OUTCOMES_WOMEN,
+    predictors  = PREDICTORS_WOMEN,
+    var_map     = VAR_MAP_WOMEN,
+    stratifiers = STRATIFIERS_WOMEN
+  ),
+  children = list(
+    label       = "Children",
+    data        = NULL,
+    outcomes    = OUTCOMES_CHILDREN,
+    predictors  = PREDICTORS_CHILDREN,
+    var_map     = VAR_MAP_CHILDREN,
+    stratifiers = STRATIFIERS_CHILDREN
+  )
+)
 
 
 # 7. FUEL DEFINITIONS (WHO Classification)

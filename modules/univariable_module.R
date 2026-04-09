@@ -17,10 +17,10 @@ UNIVARIABLE_MODULE <- list(
     # Build flat job list — one per IAP predictor per population
     jobs <- unlist(lapply(names(POPULATIONS), function(pop_key) {
       pop        <- POPULATIONS[[pop_key]]
-      data       <- get(pop$data)
-      outcomes   <- get(pop$outcomes)
-      var_map    <- get(pop$var_map)
-      predictors <- get(pop$predictors)
+      data       <- pop$data
+      outcomes   <- pop$outcomes
+      var_map    <- pop$var_map
+      predictors <- pop$predictors
       iap        <- intersect(predictors, IAP_PREDICTORS)
       
       lapply(iap, function(pred) {

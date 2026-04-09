@@ -12,10 +12,10 @@ REGRESSION_MODULE <- list(
     out <- list()
     for (pop_key in names(POPULATIONS)) {
       pop        <- POPULATIONS[[pop_key]]
-      data       <- get(pop$data)
-      outcomes   <- get(pop$outcomes)
-      predictors <- get(pop$predictors)
-      var_map    <- get(pop$var_map)
+      data       <- pop$data
+      outcomes   <- pop$outcomes
+      predictors <- pop$predictors
+      var_map    <- pop$var_map
       out        <- c(out, run_regressions(outcomes, predictors, data, var_map, pop$label))
     }
     out

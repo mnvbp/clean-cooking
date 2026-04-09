@@ -50,7 +50,7 @@ SENSITIVITY_MODULE <- list(
         for (v in flagged_vars) {
           # Build predictor list for each population — drop flagged variable
           pred_list <- lapply(POPULATIONS, function(pop) {
-            preds <- get(pop$predictors)
+            preds <- pop$predictors
             preds[preds != v]
           })
           names(pred_list) <- names(POPULATIONS)
@@ -87,16 +87,16 @@ SENSITIVITY_MODULE <- list(
       
       lapply(names(POPULATIONS), function(pop_key) {
         pop      <- POPULATIONS[[pop_key]]
-        data     <- get(pop$data)
-        outcomes <- get(pop$outcomes)
-        var_map  <- get(pop$var_map)
+        data     <- pop$data
+        outcomes <- pop$outcomes
+        var_map  <- pop$var_map
         
         # Get predictors for this population from the run config
         predictors <- if (!is.null(run_cfg$predictors[[pop_key]])) {
           run_cfg$predictors[[pop_key]]
         } else {
           # Fallback: use full predictor list if this population not specified
-          get(pop$predictors)
+          pop$predictors
         }
         
         list(

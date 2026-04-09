@@ -12,10 +12,10 @@ CROSSTAB_MODULE <- list(
     out <- list()
     for (pop_key in names(POPULATIONS)) {
       pop         <- POPULATIONS[[pop_key]]
-      data        <- get(pop$data)
-      outcomes    <- get(pop$outcomes)
-      var_map     <- get(pop$var_map)
-      stratifiers <- get(pop$stratifiers)
+      data        <- pop$data
+      outcomes    <- pop$outcomes
+      var_map     <- pop$var_map
+      stratifiers <- pop$stratifiers
       out         <- c(out, create_crosstabs(outcomes, stratifiers, data, var_map, pop$label))
     }
     out
