@@ -26,6 +26,7 @@
 
 SENSITIVITY_MODULE <- list(
   name    = "Sensitivity",
+  needs_output_tables = TRUE,
   enabled = function() RUN_SENSITIVITY,
   export  = list(file = "diagnostics.xlsx", type = "xlsx"),
   run     = function(output_tables) {

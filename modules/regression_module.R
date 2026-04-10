@@ -6,6 +6,7 @@
 
 REGRESSION_MODULE <- list(
   name    = "Regressions",
+  needs_output_tables = FALSE,
   enabled = function() RUN_REGRESSIONS,
   export  = list(file = "regressions.xlsx", type = "xlsx"),
   run     = function() {

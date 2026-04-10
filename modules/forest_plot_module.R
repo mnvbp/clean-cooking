@@ -15,6 +15,7 @@
 
 FOREST_PLOT_MODULE <- list(
   name    = "Forest Plots",
+  needs_output_tables = TRUE,
   enabled = function() RUN_FOREST_PLOTS,
   export  = list(file = "forest_plots", type = "png"),
   run     = function(output_tables) {

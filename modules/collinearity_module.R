@@ -6,6 +6,7 @@
 
 COLLINEARITY_MODULE <- list(
   name    = "Collinearity",
+  needs_output_tables = FALSE,
   enabled = function() RUN_CORRELATIONS,
   export  = list(file = "diagnostics.xlsx", type = "xlsx"),
   run     = function() {

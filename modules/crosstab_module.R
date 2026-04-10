@@ -6,6 +6,7 @@
 
 CROSSTAB_MODULE <- list(
   name    = "Crosstabs",
+  needs_output_tables = FALSE, 
   enabled = function() RUN_CROSSTABS,
   export  = list(file = "crosstabs.xlsx", type = "xlsx"),
   run     = function() {

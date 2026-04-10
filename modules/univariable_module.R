@@ -10,6 +10,7 @@
 
 UNIVARIABLE_MODULE <- list(
   name    = "Univariable",
+  needs_output_tables = FALSE,
   enabled = function() RUN_UNIVARIABLE,
   export  = list(file = "diagnostics.xlsx", type = "xlsx"),
   run     = function() {
