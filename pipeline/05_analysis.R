@@ -1,6 +1,5 @@
 # 05_ANALYSIS.R - Run Analyses
 
-#
 # Executes all registered modules in order and collects results into a single
 # named list: output_tables.
 
@@ -8,9 +7,6 @@
 #   1. Create a new file in modules/ following the existing module pattern
 #   2. Source it in 00_main.R
 #   3. Add it to MODULES below
-
-
-cat("Running analyses...\n")
 
 # Collinearity must run first — sensitivity module reads its output
 MODULES <- list(
@@ -50,8 +46,6 @@ if (exists("pipeline_log") && nrow(pipeline_log) > 0) {
 
 
 # SUMMARY
-
-cat("\nAnalysis complete.\n")
 cat("  Total tables collected:", length(output_tables), "\n")
 for (nm in names(output_tables)) {
   cat("   -", nm, "\n")

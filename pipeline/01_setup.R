@@ -1,6 +1,5 @@
 # 01_SETUP.R - Package Loading and Environment Setup
 
-
 cat("
 ================================================================================
                     DHS CLEAN COOKING ANALYSIS
@@ -21,7 +20,7 @@ pacman::p_load(
   tidylog,    # Logged dplyr operations
   car,        # VIF and regression diagnostics
   future,     # Parallel execution backend
-  furrr,       # Parallel map functions (future-backed purrr)
+  furrr,      # Parallel map functions (future-backed purrr)
   ggplot2,
   scales
 )
@@ -31,7 +30,7 @@ options(survey.lonely.psu = SURVEY_LONELY_PSU)
 # ----------------------------------------------------------------------------
 # PARALLEL EXECUTION PLAN
 # ----------------------------------------------------------------------------
-# Uses multicore (fork) on Mac/Linux — zero worker startup overhead.
+# Uses multicore (fork) on Mac/Linux
 # Falls back to multisession on Windows — compatible but slightly slower.
 # N_CORES set in config.R. NULL = all cores minus one.
 
@@ -49,10 +48,7 @@ if (.Platform$OS.type == "unix") {
   cat("Parallel plan: multisession —", n_cores, "workers\n")
 }
 
-# ----------------------------------------------------------------------------
 # OUTPUT DIRECTORY
-# ----------------------------------------------------------------------------
-
 if (!dir.exists(OUTPUT_DIR)) {
   dir.create(OUTPUT_DIR, recursive = TRUE)
   cat("Created output directory:", OUTPUT_DIR, "\n")

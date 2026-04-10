@@ -1,35 +1,24 @@
 # 04_CREATE_VARIABLES.R - Derive Analysis Variables
 
-#
 # This script uses the variable mappings from config.R and helper functions
 # from utils/variable_helpers.R to create all analysis variables.
 
-cat("Creating analysis variables...\n")
 
-# ----------------------------------------------------------------------------
 # CHILDREN DATASET
-# ----------------------------------------------------------------------------
-
-cat("  Creating children variables using VAR_MAP_CHILDREN...\n")
-
 children_data <- create_children_variables(pr_children, VAR_MAP_CHILDREN)
 
-# ----------------------------------------------------------------------------
+
 # WOMEN DATASET
-# ----------------------------------------------------------------------------
-
-cat("  Creating women variables using VAR_MAP_WOMEN...\n")
-
 women_data <- create_women_variables(merged_women, VAR_MAP_WOMEN)
 
 
-# Wire data objects into POPULATIONS now that they exist
+# Wire data objects into POPULATIONS
 POPULATIONS$women$data    <- women_data
 POPULATIONS$children$data <- children_data
 
-# ----------------------------------------------------------------------------
+
 # CREATE SURVEY DESIGNS
-# ----------------------------------------------------------------------------
+
 # NOTE: Survey designs are now created dynamically per-outcome in 
 # utils/analysis_helpers.R to support outcome-specific weights.
 # The build_survey_design() function handles this.
@@ -39,9 +28,8 @@ cat("  Default weights: Women =", VAR_MAP_WOMEN$weight_var,
     ", Children =", VAR_MAP_CHILDREN$weight_var, "\n")
 cat("  (Override per-outcome in config.R using weight_override)\n")
 
-# ----------------------------------------------------------------------------
+
 # Summary
-# ----------------------------------------------------------------------------
 
 cat("\nVariable creation complete.\n")
 cat("\nChildren dataset (n =", format(nrow(children_data), big.mark = ","), "):\n")

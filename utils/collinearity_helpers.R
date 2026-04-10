@@ -1,18 +1,17 @@
 # utils/collinearity_helpers.R - Collinearity Diagnostics
 
 
-#' Compute pairwise correlations between predictor variables
-#'
-#' @param predictors Vector of predictor variable names
-#' @param data Dataframe containing predictor variables
-#' @param group_label Label for this population group (e.g. "Women", "Children")
-#'   Used to name the entry in the returned list.
-#' @return Named list with one flat dataframe entry, ready for export.
-#'   Name follows the pattern: "<group_label> - Collinearity"
-#'
-#' @details
-#' Factors are converted to numeric before computing correlations.
-#' NOTE: For wealth_factor, this treats quintiles as a 1-5 ordinal scale.
+# Compute pairwise correlations between predictor variables
+# @param predictors Vector of predictor variable names
+# @param data Dataframe containing predictor variables
+# @param group_label Label for this population group (e.g. "Women", "Children")
+#   Used to name the entry in the returned list.
+# @return Named list with one flat dataframe entry, ready for export.
+#   Name follows the pattern: "<group_label> - Collinearity"
+#
+# @details
+# Factors are converted to numeric before computing correlations.
+# NOTE: For wealth_factor, this treats quintiles as a 1-5 ordinal scale.
 run_pairwise_correlations <- function(predictors, data, group_label = "Group") {
   preds     <- predictors[predictors %in% names(data)]
   pred_data <- data[, preds, drop = FALSE] %>%
@@ -32,14 +31,14 @@ run_pairwise_correlations <- function(predictors, data, group_label = "Group") {
 }
 
 
-#' Identify high-collinearity predictor pairs from a correlation dataframe
-#'
-#' @param cor_df Correlation dataframe as returned by run_pairwise_correlations()
-#'   (must have a "Variable" column)
-#' @param threshold Absolute correlation threshold above which a pair is flagged
-#'   (default from config: COLLINEARITY_THRESHOLD_R)
-#' @return Dataframe with columns: var1, var2, correlation
-#'   Only includes pairs above the threshold, excluding self-correlations.
+# Identify high-collinearity predictor pairs from a correlation dataframe
+#
+# @param cor_df Correlation dataframe as returned by run_pairwise_correlations()
+#   (must have a "Variable" column)
+# @param threshold Absolute correlation threshold above which a pair is flagged
+#   (default from config: COLLINEARITY_THRESHOLD_R)
+# @return Dataframe with columns: var1, var2, correlation
+#   Only includes pairs above the threshold, excluding self-correlations.
 flag_collinear_pairs <- function(cor_df,
                                  threshold = COLLINEARITY_THRESHOLD_R) {
   vars    <- cor_df$Variable

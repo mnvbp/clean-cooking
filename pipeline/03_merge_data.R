@@ -1,12 +1,6 @@
 # 03_MERGE_DATA.R - Merge and Combine Datasets
 
-cat("Merging datasets...\n")
-
-# ----------------------------------------------------------------------------
 # CHILDREN PIPELINE
-# ----------------------------------------------------------------------------
-
-cat("  Building children dataset...\n")
 
 # De facto filter
 pr_children <- pr_data %>%
@@ -53,11 +47,7 @@ cat("    Age filter (b19 < 60):", format(nrow(pr_children), big.mark = ","), "\n
 pipeline_log <- log_step(pipeline_log, "Children", "Final analysis sample",
                          nrow(pr_children))
 
-# ----------------------------------------------------------------------------
 # WOMEN PIPELINE
-# ----------------------------------------------------------------------------
-
-cat("  Building women dataset...\n")
 
 # De facto filter
 pr_women <- pr_data %>%
@@ -82,10 +72,7 @@ cat("    After inner join:", format(nrow(merged_women), big.mark = ","), "\n")
 pipeline_log <- log_step(pipeline_log, "Women", "Final analysis sample",
                          nrow(merged_women))
 
-# ----------------------------------------------------------------------------
 # Cleanup
-# ----------------------------------------------------------------------------
-
 rm(kr_outcomes, pr_women)
 
 cat("\nMerge complete.\n")
