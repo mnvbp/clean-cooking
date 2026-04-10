@@ -17,7 +17,7 @@ Zambia-2024/outputs/
 clean-cooking.Rproj
 renv/library/
 renv/staging/
-
+.Rproj.user/
 # Excel temp files
 ~$*.xlsx
 

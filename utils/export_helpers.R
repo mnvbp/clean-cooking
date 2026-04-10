@@ -16,17 +16,12 @@
 # To change sheet formatting, pass a formatter function to export_xlsx().
 #
 
-# ----------------------------------------------------------------------------
-# UTILITIES
-# ----------------------------------------------------------------------------
 
+# UTILITIES
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
 
-# ----------------------------------------------------------------------------
 # SHEET NAME HELPER
-# ----------------------------------------------------------------------------
-
 build_sheet_registry <- function(table_names) {
   sheets <- paste0("Sheet", seq_along(table_names))  # Sheet1, Sheet2, ...
   names(sheets) <- table_names
@@ -41,10 +36,8 @@ build_sheet_registry <- function(table_names) {
 }
 
 
-# ----------------------------------------------------------------------------
-# SHARED EXCEL WRITER
-# ----------------------------------------------------------------------------
 
+# SHARED EXCEL WRITER
 #' Write a named list of tables to a single Excel workbook.
 #'
 #' @param tables   Named list of dataframes to write — one sheet each.
@@ -72,10 +65,8 @@ export_xlsx <- function(tables, filepath, formatter = NULL) {
 }
 
 
-# ----------------------------------------------------------------------------
-# FOREST PLOTS WRITER
-# ----------------------------------------------------------------------------
 
+# FOREST PLOTS WRITER
 #' Save all forest plot ggplot objects as individual PNGs.
 #' One PNG per outcome x population. Directory is created automatically.
 #' File names are sanitized from the output_tables entry name.
@@ -122,10 +113,8 @@ export_forest_plots_png <- function(plots, output_dir) {
 }
 
 
-# ----------------------------------------------------------------------------
-# MAIN EXPORT ROUTER
-# ----------------------------------------------------------------------------
 
+# MAIN EXPORT ROUTER
 export_results <- function(output_tables, output_dir, modules) {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   if (length(output_tables) == 0) { message("No tables to export."); return(invisible(NULL)) }
