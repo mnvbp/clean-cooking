@@ -13,12 +13,6 @@ library(here)
 #establish root
 REPO_ROOT <- here::here()
 
-# Safety Check: Verify we are in the right place
-if (!file.exists(here::here("run_all_surveys.R"))) {
-  stop("Root Error: run_all_surveys.R not found in the identified project root: ", REPO_ROOT)
-}
-
-
 # SURVEY REGISTRY
 
 SURVEY_CONFIGS <- list(
