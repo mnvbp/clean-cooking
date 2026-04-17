@@ -18,20 +18,28 @@ MODULES <- list(
   FOREST_PLOT_MODULE
 )
 
-output_tables <- list()
+output_tables  <- list()
+module_outputs <- list()   # keyed by module, preserves export metadata
 
 for (mod in MODULES) {
   if (mod$enabled()) {
     cat("\n  Module:", mod$name, "\n")
     
-    # Sensitivity module/forestplots receives output_tables so it can read results pror
     result <- if (isTRUE(mod$needs_output_tables)) {
       mod$run(output_tables)
     } else {
       mod$run()
     }
     
+    # Pool into output_tables for modules that need to read prior results
     output_tables <- c(output_tables, result)
+    
+    # Also store separately with export metadata intact
+    module_outputs[[mod$name]] <- list(
+      export  = mod$export,
+      results = result
+    )
+    
     cat("  Done:", mod$name, "—", length(result), "table(s) added.\n")
   }
 }

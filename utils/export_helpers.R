@@ -115,24 +115,25 @@ export_forest_plots_png <- function(plots, output_dir) {
 
 
 # MAIN EXPORT ROUTER
-export_results <- function(output_tables, output_dir, modules) {
+export_results <- function(module_outputs, output_dir) {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
-  if (length(output_tables) == 0) { message("No tables to export."); return(invisible(NULL)) }
   
-  saveRDS(output_tables, file.path(output_dir, "results.rds"))
+  saveRDS(module_outputs, file.path(output_dir, "results.rds"))
   cat("  Saved: results.rds\n")
   
   xlsx_groups <- list()
   
-  for (mod in modules) {
-    if (!mod$enabled()) next
-    results <- output_tables[grepl(mod$name, names(output_tables))]
+  for (mod_name in names(module_outputs)) {
+    entry   <- module_outputs[[mod_name]]
+    results <- entry$results
+    export  <- entry$export
+    
     if (length(results) == 0) next
     
-    if (mod$export$type == "xlsx") {
-      xlsx_groups[[mod$export$file]] <- c(xlsx_groups[[mod$export$file]], results)
-    } else if (mod$export$type == "png") {
-      export_forest_plots_png(results, file.path(output_dir, mod$export$file))
+    if (export$type == "xlsx") {
+      xlsx_groups[[export$file]] <- c(xlsx_groups[[export$file]], results)
+    } else if (export$type == "png") {
+      export_forest_plots_png(results, file.path(output_dir, export$file))
     }
   }
   

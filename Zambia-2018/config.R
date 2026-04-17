@@ -1,4 +1,3 @@
-
 # CONFIG.R - Survey Configuration -- Zambia 2018
 
 #
@@ -13,9 +12,6 @@
 #   4. Add a RUN_* flag here if needed
 #
 
-
-
-
 # 1. SURVEY IDENTIFICATION
 
 
@@ -28,14 +24,10 @@ AUTHOR       <- "Manav Parikh"
 
 
 # 2. FILE PATHS
-
-# Always run the pipeline by sourcing 00_main.R — paths are relative to
-# the project root set by setwd() in that script.
-
-# Raw data folder — place your DTA files here
+# data folder — place DTA files here
 BASE_DIR   <- here::here("Zambia-2018", "data")
 
-# Results are written here (created automatically if missing)
+#output for results
 OUTPUT_DIR <- here::here("Zambia-2018", "outputs")
 
 # DTA filenames inside BASE_DIR
@@ -44,13 +36,6 @@ DATA_FILES <- list(
   ir = "ZMIR71FL.DTA",
   kr = "ZMKR71FL.DTA"
 )
-
-# Optional additional files (uncomment to enable)
-# DATA_FILES$hr <- "ZMHR71FL.DTA"
-# DATA_FILES$br <- "ZMBR71FL.DTA"
-# DATA_FILES$mr <- "ZMMR71FL.DTA"
-
-
 
 # 3. ANALYSIS FLAGS
 
@@ -74,14 +59,11 @@ SURVEY_LONELY_PSU <- "adjust"  # Options: "adjust", "certainty", "remove"
 # N_CORES: number of parallel workers for regression. NULL = all cores minus one.
 #   Reduce if you want to keep cores free for other work e.g. N_CORES <- 4
 
-USE_CACHE <- FALSE
+USE_CACHE <- TRUE
 N_CORES   <- NULL
-
-
 
 # 4. OUTCOMES
 
-#
 # Each outcome requires a label. weight_override is optional — omit or set
 # to NULL to use the population default from VAR_MAP_*.
 #
@@ -122,7 +104,6 @@ OUTCOMES_CHILDREN <- list(
 
 # 5. PREDICTORS & STRATIFIERS
 
-#
 # To add a predictor: add the name here and add variable creation logic
 # in utils/variable_helpers.R and 04_create_variables.R.
 # Collinearity and sensitivity analyses update automatically.
@@ -268,7 +249,7 @@ POPULATIONS <- list(
 )
 
 
-# 7. FUEL DEFINITIONS (WHO Classification)
+# 8. FUEL DEFINITIONS (WHO Classification)
 
 
 # Clean fuels: electricity, LPG, natural gas, biogas, solar
@@ -285,7 +266,7 @@ FUEL_DISTRIBUTION_STRATA <- c("region", "urban", "wealth")
 
 
 
-# 8. COLLINEARITY & SENSITIVITY
+# 9. COLLINEARITY & SENSITIVITY
 
 # Auto sensitivity runs are generated from collinearity results when
 # RUN_SENSITIVITY = TRUE. Any predictor pair with |r| >= THRESHOLD_R
@@ -310,7 +291,7 @@ SENSITIVITY_ANALYSES <- list()
 
 
 
-# 9. UNIVARIABLE ANALYSIS
+# 10. UNIVARIABLE ANALYSIS
 
 # IAP predictors for unadjusted single-variable regressions.
 # Active list derived as intersect(PREDICTORS_*, IAP_PREDICTORS) at runtime
@@ -330,34 +311,3 @@ ANEMIA_AGE_MAX_MONTHS <- 59
 
 # Low birth weight threshold (grams)
 LOW_BIRTH_WEIGHT_THRESHOLD <- 2500
-
-
-# 11. FOREST PLOT CONFIGURATION
-
-# Controls visual appearance and output dimensions for forest plots.
-# All entries are optional — omit any to use the built-in default.
-#
-# x_min / x_max: manual x-axis limits (OR scale). Leave NULL for auto.
-#   Example: x_min = 0.2, x_max = 5.0
-#
-# sig_color:  color for significant (p < 0.05) points and CIs
-# null_color: color for non-significant points and CIs
-# ref_color:  color of the vertical reference line at OR = 1
-#
-# png_width:  output width in inches (default 8)
-# png_height: output height in inches — NULL = auto-sized by row count
-# png_dpi:    resolution (default 180 for screen-quality; use 300 for print)
-
-FOREST_PLOT_CONFIG <- list(
-  x_min       = NULL,        # NULL = auto
-  x_max       = NULL,        # NULL = auto
-  point_size  = 3,
-  line_size   = 0.5,
-  base_size   = 11,
-  sig_color   = "#1D9E75",   # c-teal 400 — significant associations
-  null_color  = "#888780",   # c-gray 400 — non-significant
-  ref_color   = "#B4B2A9",   # c-gray 200 — reference line at OR=1
-  png_width   = 8,
-  png_height  = NULL,        # NULL = auto (0.35in per term + 1.5in header)
-  png_dpi     = 180
-)

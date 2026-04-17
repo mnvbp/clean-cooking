@@ -3,7 +3,7 @@
 # Writes all tabular results from output_tables to Excel files + results.rds.
 # To change output format, edit utils/export_helpers.R only.
 
-export_results(output_tables, OUTPUT_DIR, MODULES)
+export_results(module_outputs, OUTPUT_DIR)
 
 # ----------------------------------------------------------------------------
 # SUMMARY
