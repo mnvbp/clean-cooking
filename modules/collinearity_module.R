@@ -1,21 +1,22 @@
+# ============================================================================
 # modules/collinearity_module.R
-
+# ============================================================================
 # Run first — results feed into the auto-sensitivity module.
-# Loops over POPULATIONS automatically.
-
+# Predictor names are derived from the schema (role == "predictor").
+# ============================================================================
 
 COLLINEARITY_MODULE <- list(
   name    = "Collinearity",
   needs_output_tables = FALSE,
+  export = list(file = "diagnostics.xlsx", type = "xlsx"),
   enabled = function() RUN_CORRELATIONS,
-  export  = list(file = "diagnostics.xlsx", type = "xlsx"),
   run     = function() {
     out <- list()
     for (pop_key in names(POPULATIONS)) {
       pop        <- POPULATIONS[[pop_key]]
-      data       <- pop$data
-      predictors <- pop$predictors
-      out        <- c(out, run_pairwise_correlations(predictors, data, pop$label))
+      # Collect all unique predictor names across all outcomes for this population
+      predictors <- unique(unlist(lapply(pop$models, function(m) m$predictors)))
+      out        <- c(out, run_pairwise_correlations(predictors, pop$data, pop$label))
     }
     out
   }

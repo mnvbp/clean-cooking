@@ -1,10 +1,8 @@
+# ============================================================================
 # utils/crosstab_helpers.R - Crosstabulation Functions
-
+# ============================================================================
 
 #' Apply DHS suppression flag based on unweighted N
-#'
-#' @param n Unweighted count
-#' @return Flag string: "*" if <25, "()" if 25-49, "" if >=50
 dhs_suppression_flag <- function(n) {
   case_when(
     n < 25 ~ "*",
@@ -13,12 +11,7 @@ dhs_suppression_flag <- function(n) {
   )
 }
 
-
 #' Format N with suppression flag
-#'
-#' @param n The count to display
-#' @param flag The suppression flag ("*", "()", or "")
-#' @return Formatted string: "18*", "(42)", or "120"
 format_n_with_flag <- function(n, flag) {
   case_when(
     flag == "*"  ~ paste0(n, "*"),
@@ -27,18 +20,7 @@ format_n_with_flag <- function(n, flag) {
   )
 }
 
-
 #' Apply labels to stratifier values using embedded DHS labels
-#'
-#' @param data Dataframe containing the stratifier
-#' @param strat Name of the stratifier variable
-#' @return Vector with labeled values as a factor (preserving DHS order)
-#'
-#' @details
-#' Uses haven::as_factor() to apply labels embedded in the DHS .DTA files.
-#' This preserves the correct order (e.g., Poorest -> Richest for wealth)
-#' without requiring manual label configuration.
-#' Falls back to original values if no labels are embedded.
 apply_stratifier_labels <- function(data, strat) {
   values <- data[[strat]]
   if (!is.null(attr(values, "labels"))) {
@@ -50,24 +32,13 @@ apply_stratifier_labels <- function(data, strat) {
 
 #' Create unweighted and weighted crosstabulations with DHS suppression flags
 #'
-#' @param outcomes_config List of outcome configurations
+#' @param models     MODELS_WOMEN or MODELS_CHILDREN from config
 #' @param stratifiers Vector of stratification variable names
-#' @param data Dataframe for analysis
-#' @param var_map Variable mapping list
-#' @param group_label Label for this population group (e.g. "Women", "Children")
-#'   Used to name the entries in the returned list.
-#' @return Named list of flat dataframes, ready for export.
-#'   Names follow the pattern: "<group_label> - Crosstabs - <outcome> by <stratifier>"
-#'
-#' @details
-#' DHS suppression rules (based on UNWEIGHTED counts):
-#' - < 25 cases: Flag with "*" (suppress in final reports)
-#' - 25-49 cases: Flag with "()" (use with caution)
-#' - >= 50 cases: No flag
-#'
-#' Labels are applied using embedded DHS labels via haven::as_factor(),
-#' which preserves correct ordering (e.g., Poorest -> Richest).
-create_crosstabs <- function(outcomes_config, stratifiers, data, var_map,
+#' @param data       Dataframe for analysis
+#' @param var_map    Variable mapping list
+#' @param group_label Label for this population group
+#' @return Named list of flat dataframes
+create_crosstabs <- function(models, stratifiers, data, var_map,
                              group_label = "Group") {
   out <- list()
   
@@ -75,14 +46,21 @@ create_crosstabs <- function(outcomes_config, stratifiers, data, var_map,
   cluster_var    <- var_map$cluster_var
   strata_var     <- var_map$strata_var
   
-  for (outcome in names(outcomes_config)) {
-    weight_var   <- get_outcome_weight(outcome, outcomes_config, default_weight)
+  for (outcome in names(models)) {
+    model_cfg    <- models[[outcome]]
+    outcome_label <- model_cfg$label %||% outcome
+    weight_var   <- if (!is.null(model_cfg$weight_override)) {
+      model_cfg$weight_override
+    } else {
+      default_weight
+    }
+    
     design       <- build_survey_design(data, cluster_var, strata_var, weight_var)
     strat_tables <- list()
     
     for (strat in stratifiers) {
-      if (!(strat %in% names(data)))        next
-      if (all(is.na(data[[strat]])))        next
+      if (!(strat %in% names(data)))     next
+      if (all(is.na(data[[strat]])))     next
       
       # ----- Unweighted -----
       strat_labeled <- apply_stratifier_labels(data, strat)
@@ -179,7 +157,6 @@ create_crosstabs <- function(outcomes_config, stratifiers, data, var_map,
       strat_tables[[strat]] <- combined
     }
     
-    # Stack all stratifiers into one table per outcome
     if (length(strat_tables) > 0) {
       entry_name        <- paste0(group_label, " - Crosstabs - ", outcome)
       out[[entry_name]] <- bind_rows(strat_tables)

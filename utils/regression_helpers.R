@@ -1,10 +1,11 @@
+# ============================================================================
 # utils/regression_helpers.R - Regression Analysis Functions
-
+# ============================================================================
 
 #' Get weight variable for an outcome (default or override)
-get_outcome_weight <- function(outcome_name, outcomes_config, default_weight) {
-  if (!is.null(outcomes_config[[outcome_name]]$weight_override)) {
-    return(outcomes_config[[outcome_name]]$weight_override)
+get_outcome_weight <- function(outcome_name, models, default_weight) {
+  if (!is.null(models[[outcome_name]]$weight_override)) {
+    return(models[[outcome_name]]$weight_override)
   }
   return(default_weight)
 }
@@ -26,14 +27,20 @@ build_survey_design <- function(data, cluster_var, strata_var, weight_var) {
 }
 
 
-#' Run regressions for a single outcome — used internally by run_regressions()
+#' Run regressions for a single outcome
 #'
-#' Self-contained so it can be called in parallel workers without relying
-#' on the global environment. All inputs passed explicitly.
+#' Self-contained so it can be called in parallel workers.
+#' Each outcome uses its own predictor list from models[[outcome]]$predictors.
 #'
 #' @return List with $weighted and $unweighted tidy result dataframes
-run_single_outcome <- function(outcome, outcomes_config, predictors, data,
+run_single_outcome <- function(outcome, models, data,
                                default_weight, cluster_var, strata_var) {
+  
+  model_cfg     <- models[[outcome]]
+  outcome_label <- model_cfg$label %||% outcome
+  predictors    <- model_cfg$predictors
+  
+  # Keep only predictors that exist in the data
   preds <- predictors[predictors %in% names(data)]
   
   if (!(outcome %in% names(data))) {
@@ -41,10 +48,8 @@ run_single_outcome <- function(outcome, outcomes_config, predictors, data,
     return(list(weighted = NULL, unweighted = NULL))
   }
   
-  formula       <- as.formula(paste(outcome, "~", paste(preds, collapse = " + ")))
-  outcome_cfg   <- outcomes_config[[outcome]]
-  outcome_label <- if (!is.null(outcome_cfg$label)) outcome_cfg$label else outcome
-  weight_var    <- get_outcome_weight(outcome, outcomes_config, default_weight)
+  formula    <- as.formula(paste(outcome, "~", paste(preds, collapse = " + ")))
+  weight_var <- get_outcome_weight(outcome, models, default_weight)
   
   # Complete cases for THIS outcome only
   model_vars    <- c(outcome, preds)
@@ -57,7 +62,7 @@ run_single_outcome <- function(outcome, outcomes_config, predictors, data,
   
   # ----- Unweighted -----
   tryCatch({
-    model       <- glm(formula, data = data_complete, family = binomial())
+    model        <- glm(formula, data = data_complete, family = binomial())
     result_unwgt <- broom::tidy(model, exponentiate = TRUE, conf.int = TRUE) %>%
       dplyr::mutate(
         stars = dplyr::case_when(
@@ -77,10 +82,10 @@ run_single_outcome <- function(outcome, outcomes_config, predictors, data,
   
   # ----- Weighted -----
   tryCatch({
-    design     <- build_survey_design(data_complete, cluster_var, strata_var, weight_var)
-    n_obs      <- nrow(data_complete)
-    n_wgt <- round(sum(weights(design)), 0)
-    model_wgt  <- survey::svyglm(formula, design = design, family = quasibinomial())
+    design    <- build_survey_design(data_complete, cluster_var, strata_var, weight_var)
+    n_obs     <- nrow(data_complete)
+    n_wgt     <- round(sum(weights(design)), 0)
+    model_wgt <- survey::svyglm(formula, design = design, family = quasibinomial())
     result_wgt <- broom::tidy(model_wgt, exponentiate = TRUE, conf.int = TRUE) %>%
       dplyr::mutate(
         stars = dplyr::case_when(
@@ -106,41 +111,36 @@ run_single_outcome <- function(outcome, outcomes_config, predictors, data,
 
 #' Run unweighted and weighted logistic regressions for all outcomes
 #'
-#' Outcomes are processed in parallel using furrr::future_map() with the
-#' plan set in 01_setup.R. Falls back to sequential if furrr is unavailable.
+#' Each outcome uses its own predictor list from models[[outcome]]$predictors.
+#' Outcomes are processed in parallel using furrr::future_map().
 #'
-#' @param outcomes_config List of outcome configurations
-#' @param predictors Vector of predictor variable names
-#' @param data Dataframe for analysis
-#' @param var_map Variable mapping list
-#' @param group_label Label for this population group e.g. "Women", "Children"
+#' @param models     MODELS_WOMEN or MODELS_CHILDREN from config
+#' @param data       Dataframe for analysis
+#' @param var_map    Variable mapping list (for weight/cluster/strata)
+#' @param group_label Label for this population e.g. "Women", "Children"
 #' @return Named list of flat dataframes — one entry per outcome
-run_regressions <- function(outcomes_config, predictors, data, var_map,
-                            group_label = "Group") {
+run_regressions <- function(models, data, var_map, group_label = "Group") {
+  
   default_weight <- var_map$weight_var
   cluster_var    <- var_map$cluster_var
   strata_var     <- var_map$strata_var
+  outcome_names  <- names(models)
   
-  outcome_names  <- names(outcomes_config)
-  
-  # Run outcomes in parallel — each worker gets all required inputs explicitly
   raw_results <- furrr::future_map(
     outcome_names,
     run_single_outcome,
-    outcomes_config = outcomes_config,
-    predictors      = predictors,
-    data            = data,
-    default_weight  = default_weight,
-    cluster_var     = cluster_var,
-    strata_var      = strata_var,
-    .options        = furrr::furrr_options(seed = TRUE)
+    models         = models,
+    data           = data,
+    default_weight = default_weight,
+    cluster_var    = cluster_var,
+    strata_var     = strata_var,
+    .options       = furrr::furrr_options(seed = TRUE)
   )
   names(raw_results) <- outcome_names
   
-  # Assemble into one entry per outcome — weighted stacked above unweighted
   out <- list()
   for (outcome in outcome_names) {
-    label      <- if (!is.null(outcomes_config[[outcome]]$label)) outcomes_config[[outcome]]$label else outcome
+    label      <- models[[outcome]]$label %||% outcome
     wgt_rows   <- raw_results[[outcome]]$weighted
     unwgt_rows <- raw_results[[outcome]]$unweighted
     

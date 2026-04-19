@@ -1,23 +1,28 @@
-
+# ============================================================================
 # modules/crosstab_module.R
-
+# ============================================================================
 # Loops over POPULATIONS automatically.
-
+# Stratifiers are derived from the schema (role == "stratifier").
+# Outcomes are derived from pop$models.
+# ============================================================================
 
 CROSSTAB_MODULE <- list(
   name    = "Crosstabs",
-  needs_output_tables = FALSE, 
+  needs_output_tables = FALSE,
+  export = list(file = "crosstabs.xlsx", type = "xlsx"),
   enabled = function() RUN_CROSSTABS,
-  export  = list(file = "crosstabs.xlsx", type = "xlsx"),
   run     = function() {
     out <- list()
     for (pop_key in names(POPULATIONS)) {
       pop         <- POPULATIONS[[pop_key]]
-      data        <- pop$data
-      outcomes    <- pop$outcomes
-      var_map     <- pop$var_map
-      stratifiers <- pop$stratifiers
-      out         <- c(out, create_crosstabs(outcomes, stratifiers, data, var_map, pop$label))
+      stratifiers <- get_names(pop$schema, role = "stratifier")
+      out         <- c(out, create_crosstabs(
+        models      = pop$models,
+        stratifiers = stratifiers,
+        data        = pop$data,
+        var_map     = pop$var_map,
+        group_label = pop$label
+      ))
     }
     out
   }

@@ -313,3 +313,149 @@ create_low_birthweight <- function(bw_values,
     TRUE ~ NA_integer_
   )
 }
+
+#' Create age group categorical variable
+#' 
+#' @param age_values Vector of ages (in months for children, years for women)
+#' @param breaks Vector of break points for age groups (left-closed intervals)
+#' @param labels Vector of labels for age groups (must be length(breaks)-1)
+#' @param right Logical: if TRUE, intervals are right-closed; if FALSE (default), left-closed.
+#'   Default FALSE matches DHS reporting convention.
+#' @return Factor vector with age group labels
+#' 
+#' @details
+#' Uses cut() with right=FALSE to create left-closed intervals [a, b).
+#' 
+#' CHILDREN (default breaks, ages in months):
+#'   <6: [0, 6)
+#'   6-11: [6, 12)
+#'   12-23: [12, 24)
+#'   24-35: [24, 36)
+#'   36-47: [36, 48)
+#'   48-59: [48, 60)
+#' 
+#' WOMEN (for use with women dataset, ages in years):
+#'   15-19: [15, 20)
+#'   20-24: [20, 25)
+#'   25-29: [25, 30)
+#'   30-34: [30, 35)
+#'   35-39: [35, 40)
+#'   40-44: [40, 45)
+#'   45-49: [45, 50)
+#' 
+#' To use for women, call with:
+#'   create_age_group(age_years, breaks = c(15, 20, 25, 30, 35, 40, 45, 50),
+#'                    labels = c("15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"))
+#' 
+#' To override defaults for sensitivity or robustness checks, pass custom breaks/labels.
+create_age_group <- function(age_values,
+                             breaks = c(0, 6, 12, 24, 36, 48, 60),
+                             labels = c("<6", "6-11", "12-23", "24-35", "36-47", "48-59"),
+                             right = FALSE) {
+  
+  # Validate lengths match
+  if (length(breaks) - 1 != length(labels)) {
+    stop("Length of labels must be length(breaks) - 1. Got ",
+         length(labels), " labels for ", length(breaks) - 1, " intervals.")
+  }
+  
+  cut(age_values, breaks = breaks, labels = labels, right = right, include.lowest = FALSE)
+}
+
+
+# ============================================================================
+# SCHEMA-BASED VARIABLE CREATION
+# ============================================================================
+
+#' Apply a schema to create all variables for a population
+#'
+#' Loops over schema entries and dispatches on type field:
+#'   - recode: calls recode_binary with yes/no values from schema
+#'   - age_group: calls create_age_group with breaks/labels from schema
+#'   - factor: calls haven::as_factor then relevel with reference
+#'   - scale: multiplies source column by scale_factor
+#'   - passthrough: rename only (source_col → derived_name)
+#'
+#' @param data Dataframe with raw DHS variables
+#' @param schema Schema list (WOMEN_SCHEMA or CHILDREN_SCHEMA)
+#' @return Dataframe with all schema-derived variables added
+#'
+#' @details
+#' This function replaces the manual mutate() lists in create_women_variables()
+#' and create_children_variables(). It handles all standard variable types
+#' except "complex" cases like anemic (children) and low_birthweight which
+#' need custom logic and stay outside the schema.
+#'
+#' The function adds new columns but does NOT drop original DHS columns.
+#' After apply_schema() returns, the caller should append any additional
+#' custom mutations (e.g., anemic, low_birthweight) and then select()
+#' to keep only the final variables needed.
+apply_schema <- function(data, schema) {
+  
+  result <- data
+  
+  for (entry in schema) {
+    derived_name <- entry$derived_name
+    source_col   <- entry$source_col
+    var_type     <- entry$type %||% "passthrough"
+    
+    # Skip if source column doesn't exist
+    if (!(source_col %in% names(result))) {
+      warning(paste("Source column", source_col, "not found in data for", derived_name))
+      next
+    }
+    
+    # Dispatch on type
+    if (var_type == "recode") {
+      result[[derived_name]] <- recode_binary(
+        result[[source_col]],
+        yes_values = entry$yes_values,
+        no_values  = entry$no_values
+      )
+    }
+    
+    else if (var_type == "age_group") {
+      result[[derived_name]] <- create_age_group(
+        result[[source_col]],
+        breaks = entry$breaks,
+        labels = entry$labels
+      )
+    }
+    
+    else if (var_type == "factor") {
+      result[[derived_name]] <- haven::as_factor(result[[source_col]])
+      if (!is.null(entry$ref_category)) {
+        result[[derived_name]] <- relevel(result[[derived_name]], ref = entry$ref_category)
+      }
+    }
+    
+    else if (var_type == "scale") {
+      result[[derived_name]] <- result[[source_col]] * entry$scale_factor
+    }
+    
+    else if (var_type == "passthrough") {
+      result[[derived_name]] <- result[[source_col]]
+    }
+    
+    else {
+      warning(paste("Unknown schema type:", var_type, "for", derived_name))
+    }
+  }
+  
+  result
+}
+
+
+# Null-coalescing operator for optional fields in schema entries
+`%||%` <- function(x, y) if (is.null(x)) y else x
+
+
+#' Extract derived variable names from a schema by role
+#'
+#' @param schema  WOMEN_SCHEMA or CHILDREN_SCHEMA
+#' @param role    "predictor", "outcome", or "stratifier"
+#' @return Character vector of derived_name values matching that role
+get_names <- function(schema, role) {
+  matches <- Filter(function(e) e$role == role, schema)
+  sapply(matches, function(e) e$derived_name)
+}
