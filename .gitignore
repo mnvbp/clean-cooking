@@ -1,12 +1,14 @@
-# Data — DHS terms prohibit redistribution
+# Data
 Zambia-2018/data/
 Zambia-2024/data/
 Zambia-2024/other/
-.csv
+who_data/outputs
 
-# Outputs — regenerable from code
+# Outputs
 Zambia-2018/outputs/
 Zambia-2024/outputs/
+.tiff
+.png
 
 # R environment
 .Rhistory
@@ -22,5 +24,5 @@ renv/staging/
 # Excel temp files
 ~$*.xlsx
 
-# OS clutter
+# OS
 .DS_Store
