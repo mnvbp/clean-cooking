@@ -1,26 +1,6 @@
 # CONFIG.R - Survey Configuration -- Zambia 2018
-#
-# Edit this file to change survey, country, variables, or file paths.
-# All other scripts read from this configuration — nothing else needs
-# to be changed when adapting to a new survey.
-#
-# STRUCTURE:
-#   1.  Survey identification
-#   2.  File paths
-#   3.  Analysis flags
-#   4.  Constants (must come before schemas — schemas reference these)
-#   5.  Survey design variables
-#   6.  Schemas
-#   7.  Model specifications
-#   8.  Populations
-#   9.  Collinearity & sensitivity
-#   10. Univariable analysis
-#   11. Forest plot configuration
 
-
-# =============================================================================
 # 1. SURVEY IDENTIFICATION
-# =============================================================================
 
 SURVEY_NAME  <- "Zambia DHS 2018"
 COUNTRY_CODE <- "ZM"
@@ -28,10 +8,7 @@ SURVEY_YEAR  <- 2018
 DHS_PHASE    <- 7
 AUTHOR       <- "Manav Parikh"
 
-
-# =============================================================================
 # 2. FILE PATHS
-# =============================================================================
 
 BASE_DIR   <- here::here("Zambia-2018", "data")
 OUTPUT_DIR <- here::here("Zambia-2018", "outputs")
@@ -42,10 +19,7 @@ DATA_FILES <- list(
   kr = "ZMKR71FL.DTA"
 )
 
-
-# =============================================================================
 # 3. ANALYSIS FLAGS
-# =============================================================================
 
 RUN_REGRESSIONS  <- TRUE
 RUN_CROSSTABS    <- TRUE
@@ -59,11 +33,7 @@ SURVEY_LONELY_PSU <- "adjust"
 USE_CACHE <- FALSE
 N_CORES   <- NULL
 
-
-# =============================================================================
 # 4. CONSTANTS
-# =============================================================================
-# Must be defined before schemas — schema entries reference these directly.
 
 # Fuel classification (WHO)
 # Clean: electricity, LPG, natural gas, biogas, solar
@@ -73,8 +43,7 @@ CLEAN_FUELS <- c(1, 2, 3, 4, 12)
 DIRTY_FUELS <- c(5, 6, 7, 8, 9, 10, 11)
 
 # Reference categories for factor variables in regression models.
-# Change here to update all models simultaneously.
-# Age group references follow largest-cell convention (most common in DHS literature).
+# Age group references
 WEALTH_REFERENCE       <- "richest"
 AGE_GROUP_REF_CHILDREN <- "12-23"   # Largest cell for children 6-59 months
 AGE_GROUP_REF_WOMEN    <- "25-29"   # Modal age group for women 15-49
@@ -84,13 +53,7 @@ ANEMIA_AGE_MIN_MONTHS      <- 6
 ANEMIA_AGE_MAX_MONTHS      <- 59
 LOW_BIRTH_WEIGHT_THRESHOLD <- 2500
 
-
-# =============================================================================
 # 5. SURVEY DESIGN VARIABLES
-# =============================================================================
-# Only survey design variables remain here — all analysis variables have
-# moved to the schemas in section 6.
-# get_names() helper lives in utils/variable_helpers.R.
 
 VAR_MAP_WOMEN <- list(
   weight_var  = "v005",
@@ -104,10 +67,8 @@ VAR_MAP_CHILDREN <- list(
   strata_var  = "hv023"
 )
 
-
-# =============================================================================
 # 6. SCHEMAS
-# =============================================================================
+
 # Each entry declares one derived variable with its source column, role,
 # and creation parameters. Variable creation, predictor lists, outcome lists,
 # and stratifier lists are all derived from these schemas at runtime by
@@ -133,11 +94,7 @@ VAR_MAP_CHILDREN <- list(
 #                        create_children_variables() after apply_schema()
 #   survey design      — weight_var, cluster_var, strata_var in VAR_MAP_*
 
-
-# -----------------------------------------------------------------------------
 # WOMEN_SCHEMA
-# -----------------------------------------------------------------------------
-
 WOMEN_SCHEMA <- list(
   
   # --- Outcomes ---
@@ -256,12 +213,7 @@ WOMEN_SCHEMA <- list(
   )
 )
 
-
-# -----------------------------------------------------------------------------
 # CHILDREN_SCHEMA
-# -----------------------------------------------------------------------------
-# anemic and low_birthweight are NOT in this schema — they require two source
-# columns each and are handled explicitly in create_children_variables().
 
 CHILDREN_SCHEMA <- list(
   
@@ -377,9 +329,9 @@ CHILDREN_SCHEMA <- list(
 )
 
 
-# =============================================================================
+
 # 7. MODEL SPECIFICATIONS
-# =============================================================================
+
 # Each outcome declares its own predictor list. This replaces the shared
 # PREDICTORS_* pattern which applied identical predictors to every outcome
 # regardless of methodological appropriateness.
@@ -392,10 +344,7 @@ CHILDREN_SCHEMA <- list(
 # To switch an outcome to categorical age:
 #   comment out "age" and uncomment "age_group"
 
-
-# -----------------------------------------------------------------------------
 # MODELS_WOMEN
-# -----------------------------------------------------------------------------
 
 MODELS_WOMEN <- list(
   anemic = list(
@@ -446,9 +395,8 @@ MODELS_WOMEN <- list(
 )
 
 
-# -----------------------------------------------------------------------------
+
 # MODELS_CHILDREN
-# -----------------------------------------------------------------------------
 
 MODELS_CHILDREN <- list(
   anemic = list(
@@ -501,10 +449,8 @@ MODELS_CHILDREN <- list(
   )
 )
 
-
-# =============================================================================
 # 8. POPULATIONS
-# =============================================================================
+
 # Defines all analysis populations. Modules loop over this automatically.
 # data is wired in 04_create_variables.R after variable creation.
 #
@@ -532,20 +478,16 @@ POPULATIONS <- list(
 )
 
 
-# =============================================================================
-# 9. COLLINEARITY & SENSITIVITY
-# =============================================================================
 
+# 9. COLLINEARITY & SENSITIVITY
 COLLINEARITY_THRESHOLD_R <- 0.5
 
 # Manual sensitivity runs. Leave as list() to rely entirely on auto-generated
 # collinearity runs. See README for format.
 SENSITIVITY_ANALYSES <- list()
 
-
-# =============================================================================
 # 10. UNIVARIABLE ANALYSIS
-# =============================================================================
+
 # IAP predictors for unadjusted single-variable regressions.
 # Derived at runtime as intersect(model predictors, IAP_PREDICTORS).
 

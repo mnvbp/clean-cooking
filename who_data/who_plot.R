@@ -8,7 +8,7 @@ here::here()
 tiff("figure1.tiff", units="in", width=7.5, height=5, res=300)
 
 #Import CSV
-data <- read.csv("Prop_Cleanfuel_WHO.csv", header = TRUE)
+data <- read.csv("data/Prop_Cleanfuel_WHO.csv", header = TRUE)
 
 #Filter for Country
 dataZambia <- data %>% 
